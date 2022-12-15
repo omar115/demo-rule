@@ -1,0 +1,2 @@
+# demo-rule
+sphinx test
