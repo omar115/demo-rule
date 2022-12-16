@@ -1,0 +1,28 @@
+@startuml
+title Build process
+
+skinparam activity {
+  BackgroundColor #A7C7E7
+}
+
+#BDB5D5:Commit to a branch;
+repeat:Bitbucket;
+:Cloud Source Repositories;
+floating note #E6E6FA:Code mirrored from Bitbucket
+-> triggers;
+:Cloud Build;
+#BDB5D5:Start build;
+floating note #E6E6FA:Step 1\nInstall dependencies\n\nStep 2\nLinting (Coding Style)\n\nStep 3\nTesting\n\nStep 4\nCode Coverage
+-> PubSub\nmessage;
+:Cloud Pub/Sub;
+-> triggers;
+:Cloud Functions;
+#DDDDDD:bitbucketBuildUpdate;
+#BDB5D5:Notify build status;
+legend right
+    Legend
+    | method |
+    |<#BDB5D5> process |
+    |<#A7C7E7> cloud service |
+endlegend
+@enduml
