@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Installation &#8212; rule  documentation</title>
+    <title>&lt;no title&gt; &#8212; rule  documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -32,33 +32,39 @@
 
           <div class="body" role="main">
             
-  <section id="installation">
-<span id="install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>You can install <code class="docutils literal notranslate"><span class="pre">sphinx-multiversion</span></code> via <a href="#id1"><span class="problematic" id="id3">`pip &lt;pip_&gt;`_</span></a><a href="#id1"><span class="problematic" id="id2"> &lt;pip_&gt;</span></a> or directly from <code class="file docutils literal notranslate"><span class="pre">setup.py</span></code>.</p>
-<section id="install-from-pypi">
-<h2>Install from PyPi<a class="headerlink" href="#install-from-pypi" title="Permalink to this headline">¶</a></h2>
-<p>Using pip you can easily install the latest release version <a href="#id4"><span class="problematic" id="id6">`PyPI &lt;pypi_&gt;`_</span></a><a href="#id4"><span class="problematic" id="id5"> &lt;pypi_&gt;</span></a>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install sphinx-multiversion
-</pre></div>
-</div>
-</section>
-<section id="install-from-github">
-<h2>Install from GitHub<a class="headerlink" href="#install-from-github" title="Permalink to this headline">¶</a></h2>
-<p>You can install the latest development version using pip directly from the GitHub
-repository:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install git+https://github.com/Holzhaus/sphinx-multiversion.git
-</pre></div>
-</div>
-</section>
-<section id="install-via-setup-py">
-<h2>Install via <code class="file docutils literal notranslate"><span class="pre">setup.py</span></code><a class="headerlink" href="#install-via-setup-py" title="Permalink to this headline">¶</a></h2>
-<p>It’s also possible to clone the Git repository and install the extension using its <code class="file docutils literal notranslate"><span class="pre">setup.py</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/Holzhaus/sphinx-multiversion.git
-<span class="nb">cd</span> sphinx-multiversion
-</pre></div>
-</div>
-</section>
-</section>
+  <p id="install">&#64;startuml
+title Create rule</p>
+<p>#BDB5D5:Client sends a POST request to /rules/;
+-&gt; calls;
+#ADD1B2:RuleService;
+floating note : Response: {integration}, 201
+:create;
+#ADD1B2:RuleRepository;
+:save;
+floating note:RuleCreated
+split</p>
+<blockquote>
+<div><p>#ADD1B2:Rule;</p>
+</div></blockquote>
+<dl class="simple">
+<dt>split again</dt><dd><p>#ADD1B2:Events/Event;</p>
+</dd>
+</dl>
+<p>end split
+#F2D2BD:Firestore;
+-&gt; triggers;
+#A7C7E7:Publisher;
+legend right</p>
+<blockquote>
+<div><p>Legend
+| method |
+<a href="#id1"><span class="problematic" id="id2">|</span></a>&lt;#ADD1B2&gt; class |
+<a href="#id3"><span class="problematic" id="id4">|</span></a>&lt;#F2D2BD&gt; database |
+<a href="#id5"><span class="problematic" id="id6">|</span></a>&lt;#BDB5D5&gt; process |
+<a href="#id7"><span class="problematic" id="id8">|</span></a>&lt;#A7C7E7&gt; publisher |</p>
+</div></blockquote>
+<p>endlegend
+&#64;enduml</p>
 
 
           </div>
