@@ -1,0 +1,13 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Rule Community Container Diagram
+
+AddContainerTag("service", $sprite="application_server", $legendText="service")
+
+Container_Boundary(rule_community, "rule-community") {
+  Container(rule, "rule", $descr="Rule service is responsible for creating, updating and deleting rules of the Rakizo platform.", $tags="service", $link="rule.puml")
+}
+
+SHOW_LEGEND()
+@enduml
