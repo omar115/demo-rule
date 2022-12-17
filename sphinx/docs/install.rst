@@ -1,36 +1,30 @@
 .. _install:
 
-============
-Installation
-============
+@startuml
+title Create rule
 
-You can install ``sphinx-multiversion`` via `pip <pip_>`_ or directly from :file:`setup.py`.
-
-Install from PyPi
-===================
-
-Using pip you can easily install the latest release version `PyPI <pypi_>`_:
-
-.. code-block:: bash
-
-    pip install sphinx-multiversion
-
-Install from GitHub
-===================
-
-You can install the latest development version using pip directly from the GitHub
-repository:
-
-.. code-block:: bash
-
-    pip install git+https://github.com/Holzhaus/sphinx-multiversion.git
-
-Install via :file:`setup.py`
-============================
-
-It's also possible to clone the Git repository and install the extension using its :file:`setup.py`:
-
-.. code-block:: bash
-
-    git clone https://github.com/Holzhaus/sphinx-multiversion.git
-    cd sphinx-multiversion
+#BDB5D5:Client sends a POST request to /rules/;
+-> calls;
+#ADD1B2:RuleService;
+floating note : Response: {integration}, 201
+:create;
+#ADD1B2:RuleRepository;
+:save;
+floating note:RuleCreated
+split
+    #ADD1B2:Rule;
+split again
+    #ADD1B2:Events/Event;
+end split
+#F2D2BD:Firestore;
+-> triggers;
+#A7C7E7:Publisher;
+legend right
+    Legend
+    | method |
+    |<#ADD1B2> class |
+    |<#F2D2BD> database |
+    |<#BDB5D5> process |
+    |<#A7C7E7> publisher |
+endlegend
+@enduml

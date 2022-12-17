@@ -7,14 +7,17 @@ Welcome to rule's documentation!
 ================================
 
 .. toctree::
-   :maxdepth: 4
-   :caption: Contents:
+    :maxdepth: 3
+    :caption: General
+
+    install
 
 
 
-Indices and tables
-==================
+.. toctree::
+    :maxdepth: 1
+    :caption: Appendix
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+    github_pages
+    faq
+    changelog
