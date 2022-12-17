@@ -13,5 +13,5 @@ Welcome to rule's documentation!
     install
     .. include:: README.md
 
-   .. uml:: ../docs/plantuml/rule/create_rule.puml
+    .. uml:: create_rule.puml
     

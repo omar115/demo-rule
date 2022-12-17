@@ -11,11 +11,7 @@ Welcome to rule's documentation!
     :caption: General
 
     install
+    .. include:: README.md
 
-
-
-.. toctree::
-    :maxdepth: 1
-    :caption: Appendix
-
+   .. uml:: ../docs/plantuml/rule/create_rule.puml
     
