@@ -11,7 +11,6 @@ Welcome to rule's documentation!
    :caption: Contents:
 
 
-
 Indices and tables
 ==================
 

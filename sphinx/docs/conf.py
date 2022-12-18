@@ -31,6 +31,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.todo',
+    'sphinxcontrib.versioning',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -68,3 +69,11 @@ html_static_path = ['_static']
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
+versioning_context = 'sphinxcontrib.versioning.contexts.git'
+versioning_git_branch_key = 'branch'
+versioning_list_tags_pattern = r'v\d+\.\d+'
+versioning_local_scheme = 'branch'
+versioning_local_tag = '0.0.0'
+versioning_menu_name = 'Versions'
+versioning_show_urls = False

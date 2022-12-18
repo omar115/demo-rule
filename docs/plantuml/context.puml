@@ -3,7 +3,7 @@
 
 title Rakizo Context Diagram
 
-AddContainerTag("community", $sprite="application_server", $legendText="community")
+AddContainerTag("service", $legendText="service")
 
 Person(customer, "Customer", "Company that wants to build an application.")
 
@@ -11,6 +11,8 @@ System_Boundary(ui, "UI Interface") {
    Container(rakizo_libs, "rakizo-libs", "Java, Python", "All common JVM functionality used across the Rakizo services.", $tags="community")
    Container(platform_data_services, "platform-services", "YAML", "This repository is composed of multiple micro services that are in charge of sending data to the data lake.", $tags="community")
    Container(screen_community, "screen-community", "YAML", "This repository includes all services under the screen community.", $tags="community")
+   Container(integration_community, "integration-community", "YAML", "This repository includes all services under the integration community.", $tags="community")
+   Container(rule_community, "rule-community", "YAML", "This repository includes all services under the rule community.", $tags="community")
    Container(dashboard_community, "dashboard-community", "YAML", "Dashboard community will be needed for serving user dashboard services.", $tags="community")
    Container(architectural_decisions, "architectural-decisions", "YAML", "Architectural decisions records for Rakizo platform.", $tags="community")
    Container(rakizo_ui, "rakizo-ui", "Dart", "the UI for the RAKIZO Platform.", $tags="community")
