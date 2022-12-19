@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to flow’s documentation! &mdash; flow  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="flow" href="flow.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> flow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="flow.html">flow</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">flow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Welcome to flow’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-flow-s-documentation">
+<h1>Welcome to flow’s documentation!<a class="headerlink" href="#welcome-to-flow-s-documentation" title="Permalink to this headline"></a></h1>
+<p># README #</p>
+<p>Flow community is responsible for managing all the services related to flow of the Rakizo platform.
+Currently, flow community consists of following services:</p>
+<p>### Services ###</p>
+<ul class="simple">
+<li><p>[Flow Service](flow/README.md)</p></li>
+<li><p>[Flow Step Service](flow_step/README.md)</p></li>
+</ul>
+<p>N.B. For the first time after cloning, you need to execute following command to configure git hook configuration,
+so that it can ensure conventional commits</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./git-config.sh
+</pre></div>
+</div>
+<p><strong>PlantUML</strong></p>
+<p class="plantuml">
+<img src="_images/plantuml-0bb382edc71e7c30a8c1edcc2ac1f730e5d5f7e0.png" alt="&#64;startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Rakizo Context Diagram
+
+AddContainerTag(&quot;community&quot;, $sprite=&quot;application_server&quot;, $legendText=&quot;community&quot;)
+
+Person(customer, &quot;Customer&quot;, &quot;Company that wants to build an application.&quot;)
+
+System_Boundary(ui, &quot;UI Interface&quot;) {
+   Container(rakizo_libs, &quot;rakizo-libs&quot;, &quot;Java, Python&quot;, &quot;All common JVM functionality used across the Rakizo services.&quot;, $tags=&quot;community&quot;)
+   Container(platform_data_services, &quot;platform-services&quot;, &quot;YAML&quot;, &quot;This repository is composed of multiple micro services that are in charge of sending data to the data lake.&quot;, $tags=&quot;community&quot;)
+   Container(screen_community, &quot;screen-community&quot;, &quot;YAML&quot;, &quot;This repository includes all services under the screen community.&quot;, $tags=&quot;community&quot;)
+   Container(dashboard_community, &quot;dashboard-community&quot;, &quot;YAML&quot;, &quot;Dashboard community will be needed for serving user dashboard services.&quot;, $tags=&quot;community&quot;)
+   Container(architectural_decisions, &quot;architectural-decisions&quot;, &quot;YAML&quot;, &quot;Architectural decisions records for Rakizo platform.&quot;, $tags=&quot;community&quot;)
+   Container(rakizo_ui, &quot;rakizo-ui&quot;, &quot;Dart&quot;, &quot;the UI for the RAKIZO Platform.&quot;, $tags=&quot;community&quot;)
+   Container(security_community, &quot;security-community&quot;, &quot;Java, Python&quot;, &quot;Security community is responsible for managing all kinds of authentication related services of the Rakizo platform.&quot;, $tags=&quot;community&quot;, $link=&quot;container.puml&quot;)
+   Container(application_community, &quot;application-community&quot;, &quot;Java, Python&quot;, &quot;This repository includes all services under the application community.&quot;, $tags=&quot;community&quot;)
+   Container(flow_community, &quot;flow-community&quot;, &quot;Java, Python&quot;, &quot;This repository includes all services under the flow community.&quot;, $tags=&quot;community&quot;)
+   Container(rakizo_CICD, &quot;rakizo-CICD&quot;, &quot;Java, Python&quot;, &quot;Stores user registration information, hashed auth credentials, access logs, etc.&quot;, $tags=&quot;community&quot;)
+   Container(platform_data_services, &quot;platform-data-services&quot;, &quot;YAML&quot;, &quot;This repository is composed of multiple micro services that are in charge of sending data to the data lake.&quot;, $tags=&quot;community&quot;)
+   Container(dlq_processor, &quot;dlq-processor&quot;, &quot;YAML&quot;, &quot;Repository that executes dlq reprocessing. It is composed of multiple micro-services that are in charge of sending data to the data lake and reporting warehouse.&quot;, $tags=&quot;community&quot;)
+   Container(platform_community, &quot;platform-community&quot;, &quot;Java, Python&quot;, &quot;This repository is composed of multiple micro-services at the platform level.&quot;, $tags=&quot;community&quot;)
+}
+
+Rel(customer, ui, &quot;Uses&quot;)
+
+SHOW_LEGEND()
+&#64;enduml"/>
+</p>
+<p class="plantuml">
+<img src="_images/plantuml-f191f7e6942c39cfdb138ced00816e66271c5f32.png" alt="&#64;startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Flow Community Container Diagram
+
+AddContainerTag(&quot;service&quot;, $legendText=&quot;service&quot;)
+
+Container_Boundary(flow_community, &quot;flow-community&quot;) {
+  Container(flow, &quot;flow&quot;, $descr=&quot;Flow service is responsible for creating, updating and deleting flows of the Rakizo platform.&quot;, $tags=&quot;service&quot;, $link=&quot;flow.puml&quot;)
+}
+
+SHOW_LEGEND()
+&#64;enduml"/>
+</p>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="flow.html">flow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flow.gateways.html">gateways</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="flow.gateways.commons.html">commons</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flow.gateways.widget_gateway.html">widget_gateway</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="flow.aggregates.html">aggregates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.api.html">api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.constants.html">constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.containers.html">containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.events.html">events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.exceptions.html">exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.repositories.html">repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.schemas.html">schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.services.html">services</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="flow.html" class="btn btn-neutral float-right" title="flow" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, UDPlatforms Inc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

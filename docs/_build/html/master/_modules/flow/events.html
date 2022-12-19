@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>flow.events &mdash; flow  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> flow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../flow.html">flow</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">flow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>flow.events</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for flow.events</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">rakizo.event_essentials.events</span> <span class="kn">import</span> <span class="n">Event</span>
+<span class="kn">from</span> <span class="nn">rakizo.logging_config.logging_config</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+<span class="kn">from</span> <span class="nn">rakizo.test_utils.decorators</span> <span class="kn">import</span> <span class="n">event</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="BaseFlowEvent"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent">[docs]</a><span class="k">class</span> <span class="nc">BaseFlowEvent</span><span class="p">(</span><span class="n">Event</span><span class="p">):</span>  <span class="c1"># pylint: disable=C0302</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    BaseFlowEvent Event class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization method for BaseFlowEvent</span>
+<span class="sd">        Takes builder object and sets properties</span>
+
+<span class="sd">        :param builder: Builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_name&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flowVersion</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_flow_version&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_description&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createdBy</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_created_by&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updatedBy</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_updated_by&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">widgetId</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_widget_id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">widgetType</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_widget_type&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">widgetName</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_widget_name&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stepConnection</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_step_connection&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseFlowEvent.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metrics</span>
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="BaseFlowEvent.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">Event</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>  <span class="c1"># pylint: disable=W0223</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for BaseFlowEvent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregate_id</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for Builder class</span>
+<span class="sd">            Takes aggregate_id, trigger, entity_id and entity_type and sets accordingly</span>
+
+<span class="sd">            :param aggregate_id: str object</span>
+<span class="sd">            :param trigger: str object</span>
+<span class="sd">            :param entity_id: str object</span>
+<span class="sd">            :param entity_type: str object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggregate_id</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sessionId</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">companyId</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="BaseFlowEvent.Builder.name"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent.Builder.name">[docs]</a>        <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow_name</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes flow_name and sets property in builder</span>
+
+<span class="sd">            :param flow_name: string object</span>
+<span class="sd">            :return: Builder objects</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">flow_name</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="BaseFlowEvent.Builder.flow_version"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent.Builder.flow_version">[docs]</a>        <span class="k">def</span> <span class="nf">flow_version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow_version</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes flow_version and sets property in builder</span>
+
+<span class="sd">            :param flow_version: string object</span>
+<span class="sd">            :return: Builder objects</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_flow_version</span> <span class="o">=</span> <span class="n">flow_version</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="BaseFlowEvent.Builder.description"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent.Builder.description">[docs]</a>        <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow_description</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes flow_description and sets property in builder</span>
+
+<span class="sd">            :param flow_description: string object</span>
+<span class="sd">            :return: Builder objects</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">flow_description</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="BaseFlowEvent.Builder.widget_id"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent.Builder.widget_id">[docs]</a>        <span class="k">def</span> <span class="nf">widget_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_id</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes widget_id and sets property in builder</span>
+
+<span class="sd">            :param widget_id: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_widget_id</span> <span class="o">=</span> <span class="n">widget_id</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="BaseFlowEvent.Builder.widget_type"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent.Builder.widget_type">[docs]</a>        <span class="k">def</span> <span class="nf">widget_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_type</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes widget_type and sets property in builder</span>
+
+<span class="sd">            :param widget_type: string object</span>
+<span class="sd">            :return: Builder objects</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_widget_type</span> <span class="o">=</span> <span class="n">widget_type</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="BaseFlowEvent.Builder.widget_name"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent.Builder.widget_name">[docs]</a>        <span class="k">def</span> <span class="nf">widget_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes widget_name and sets property in builder</span>
+
+<span class="sd">            :param widget_name: string object</span>
+<span class="sd">            :return: Builder objects</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_widget_name</span> <span class="o">=</span> <span class="n">widget_name</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="BaseFlowEvent.Builder.step_connection"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent.Builder.step_connection">[docs]</a>        <span class="k">def</span> <span class="nf">step_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_connection</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes step connection and sets property in builder</span>
+
+<span class="sd">            :param step_connection: list object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_step_connection</span> <span class="o">=</span> <span class="n">step_connection</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="BaseFlowEvent.Builder.created_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent.Builder.created_by">[docs]</a>        <span class="k">def</span> <span class="nf">created_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow_created_by</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes flow_created_by and sets property in builder</span>
+
+<span class="sd">            :param flow_created_by: string object</span>
+<span class="sd">            :return: Builder objects</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_created_by</span> <span class="o">=</span> <span class="n">flow_created_by</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="BaseFlowEvent.Builder.updated_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowEvent.Builder.updated_by">[docs]</a>        <span class="k">def</span> <span class="nf">updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes user_id and sets property in builder</span>
+
+<span class="sd">            :param user_id: string object</span>
+<span class="sd">            :return: Builder objects</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_updated_by</span> <span class="o">=</span> <span class="n">user_id</span>
+            <span class="k">return</span> <span class="bp">self</span></div></div></div>
+
+
+<div class="viewcode-block" id="FlowCreated"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowCreated">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">FlowCreated</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FlowCreated Event class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FlowCreated.get_name"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowCreated.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns name of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+<div class="viewcode-block" id="FlowCreated.get_flow_version"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowCreated.get_flow_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_flow_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns version of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flowVersion</span></div>
+
+<div class="viewcode-block" id="FlowCreated.get_description"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowCreated.get_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns description of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span></div>
+
+<div class="viewcode-block" id="FlowCreated.get_created_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowCreated.get_created_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_created_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns created by of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">createdBy</span></div>
+
+<div class="viewcode-block" id="FlowCreated.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowCreated.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="FlowCreated.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowCreated.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for FlowCreated Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregate_id</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for FlowCreated event</span>
+<span class="sd">            Takes aggregate_id, entity_id and entity_type to build event</span>
+
+<span class="sd">            :param aggregate_id: str object</span>
+<span class="sd">            :param entity_id: str object</span>
+<span class="sd">            :param entity_type: str object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">trigger</span> <span class="o">=</span> <span class="s1">&#39;create&#39;</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggregate_id</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FlowCreated.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowCreated.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns FlowCreated object built by the builder</span>
+<span class="sd">            :return: FlowCreated object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">FlowCreated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="BaseFlowFieldUpdate"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowFieldUpdate">[docs]</a><span class="k">class</span> <span class="nc">BaseFlowFieldUpdate</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    BaseFlowFieldUpdate Event class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BaseFlowFieldUpdate.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowFieldUpdate.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>  <span class="c1"># pylint: disable=W0223</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for BaseFlowFieldUpdate Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregate_id</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for BaseFlowFieldUpdate Event&#39;s Builder class</span>
+
+<span class="sd">            :param aggregate_id: str object</span>
+<span class="sd">            :param entity_id: str object</span>
+<span class="sd">            :param entity_type: str object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">trigger</span> <span class="o">=</span> <span class="s1">&#39;update&#39;</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggregate_id</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseFlowFieldUpdate.Builder.old_value"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowFieldUpdate.Builder.old_value">[docs]</a>        <span class="k">def</span> <span class="nf">old_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes value and set is as oldValue and returns Builder object</span>
+
+<span class="sd">            :param value: str or dict object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_old_value</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="BaseFlowFieldUpdate.Builder.new_value"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowFieldUpdate.Builder.new_value">[docs]</a>        <span class="k">def</span> <span class="nf">new_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes value and set it as newValue and returns Builder object</span>
+
+<span class="sd">            :param value: str or dict object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_new_value</span> <span class="o">=</span> <span class="n">value</span>
+            <span class="k">return</span> <span class="bp">self</span></div></div></div>
+
+
+<div class="viewcode-block" id="FlowNameUpdated"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowNameUpdated">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">FlowNameUpdated</span><span class="p">(</span><span class="n">BaseFlowFieldUpdate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FlowNameUpdated Event Class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization method for FlowNameUpdated Event</span>
+<span class="sd">        Takes builder object and sets properties</span>
+
+<span class="sd">        :param builder: Builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">oldName</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_old_value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newName</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_new_value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FlowNameUpdated.get_old_name"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowNameUpdated.get_old_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_old_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns old value of the flow name</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">oldName</span></div>
+
+<div class="viewcode-block" id="FlowNameUpdated.get_new_name"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowNameUpdated.get_new_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_new_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns new value of the flow name</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">newName</span></div>
+
+<div class="viewcode-block" id="FlowNameUpdated.get_change"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowNameUpdated.get_change">[docs]</a>    <span class="k">def</span> <span class="nf">get_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns new value and old value of the flow name</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;old_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_old_name</span><span class="p">(),</span>
+            <span class="s1">&#39;new_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_new_name</span><span class="p">()</span>
+        <span class="p">}}</span></div>
+
+<div class="viewcode-block" id="FlowNameUpdated.get_flow_version"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowNameUpdated.get_flow_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_flow_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns version of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flowVersion</span></div>
+
+<div class="viewcode-block" id="FlowNameUpdated.get_description"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowNameUpdated.get_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns description of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span></div>
+
+<div class="viewcode-block" id="FlowNameUpdated.get_updated_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowNameUpdated.get_updated_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns updated by of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">updatedBy</span></div>
+
+<div class="viewcode-block" id="FlowNameUpdated.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowNameUpdated.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="FlowNameUpdated.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowNameUpdated.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowFieldUpdate</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for FlowNameUpdated Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FlowNameUpdated.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowNameUpdated.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns FlowNameUpdated object built by the builder</span>
+<span class="sd">            :return: FlowNameUpdated object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">FlowNameUpdated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="FlowDescriptionUpdated"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDescriptionUpdated">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">FlowDescriptionUpdated</span><span class="p">(</span><span class="n">BaseFlowFieldUpdate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FlowDescriptionUpdated Event Class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization method for FlowDescriptionUpdated Event</span>
+<span class="sd">        Takes builder object and sets properties</span>
+
+<span class="sd">        :param builder: Builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">oldDescription</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_old_value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newDescription</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_new_value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FlowDescriptionUpdated.get_old_description"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDescriptionUpdated.get_old_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_old_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns old value of the flow description</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">oldDescription</span></div>
+
+<div class="viewcode-block" id="FlowDescriptionUpdated.get_new_description"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDescriptionUpdated.get_new_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_new_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns new value of the flow description</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">newDescription</span></div>
+
+<div class="viewcode-block" id="FlowDescriptionUpdated.get_change"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDescriptionUpdated.get_change">[docs]</a>    <span class="k">def</span> <span class="nf">get_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns new value and old value of the flow name</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;old_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_old_description</span><span class="p">(),</span>
+            <span class="s1">&#39;new_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_new_description</span><span class="p">()</span>
+        <span class="p">}}</span></div>
+
+<div class="viewcode-block" id="FlowDescriptionUpdated.get_flow_version"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDescriptionUpdated.get_flow_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_flow_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns version of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flowVersion</span></div>
+
+<div class="viewcode-block" id="FlowDescriptionUpdated.get_name"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDescriptionUpdated.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns name of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+<div class="viewcode-block" id="FlowDescriptionUpdated.get_updated_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDescriptionUpdated.get_updated_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns updated by of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">updatedBy</span></div>
+
+<div class="viewcode-block" id="FlowDescriptionUpdated.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDescriptionUpdated.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="FlowDescriptionUpdated.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDescriptionUpdated.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowFieldUpdate</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for FlowDescriptionUpdated Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FlowDescriptionUpdated.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDescriptionUpdated.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns FlowDescriptionUpdated object built by the builder</span>
+<span class="sd">            :return: FlowDescriptionUpdated object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">FlowDescriptionUpdated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="BaseFlowUpdated"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowUpdated">[docs]</a><span class="k">class</span> <span class="nc">BaseFlowUpdated</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    BaseFlowUpdated Event class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BaseFlowUpdated.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowUpdated.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>  <span class="c1"># pylint: disable=W0223</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for BaseFlowUpdated Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregate_id</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for BaseFlowUpdated Event&#39;s Builder class</span>
+
+<span class="sd">            :param aggregate_id: str object</span>
+<span class="sd">            :param entity_id: str object</span>
+<span class="sd">            :param entity_type: str object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">trigger</span> <span class="o">=</span> <span class="s1">&#39;update&#39;</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggregate_id</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BaseFlowUpdated.Builder.change_info"><a class="viewcode-back" href="../../flow.events.html#flow.events.BaseFlowUpdated.Builder.change_info">[docs]</a>        <span class="k">def</span> <span class="nf">change_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes updated info and returns Builder object</span>
+
+<span class="sd">            :param values: dict object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_change_info</span> <span class="o">=</span> <span class="n">values</span>
+            <span class="k">return</span> <span class="bp">self</span></div></div></div>
+
+
+<div class="viewcode-block" id="FlowInfoUpdated"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowInfoUpdated">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">FlowInfoUpdated</span><span class="p">(</span><span class="n">BaseFlowUpdated</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FlowInfoUpdated Event Class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization method for FlowInfoUpdated Event</span>
+<span class="sd">        Takes builder object and sets properties</span>
+
+<span class="sd">        :param builder: Builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changeInfo</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_change_info&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FlowInfoUpdated.get_name"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowInfoUpdated.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns name of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+<div class="viewcode-block" id="FlowInfoUpdated.get_flow_version"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowInfoUpdated.get_flow_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_flow_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns version of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flowVersion</span></div>
+
+<div class="viewcode-block" id="FlowInfoUpdated.get_description"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowInfoUpdated.get_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns description of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">description</span></div>
+
+<div class="viewcode-block" id="FlowInfoUpdated.get_updated_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowInfoUpdated.get_updated_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns created by of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">updatedBy</span></div>
+
+<div class="viewcode-block" id="FlowInfoUpdated.get_change_info"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowInfoUpdated.get_change_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_change_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns updated info of flow</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">changeInfo</span></div>
+
+<div class="viewcode-block" id="FlowInfoUpdated.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowInfoUpdated.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="FlowInfoUpdated.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowInfoUpdated.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowUpdated</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for FlowInfoUpdated Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FlowInfoUpdated.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowInfoUpdated.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns FlowInfoUpdated object built by the builder</span>
+<span class="sd">            :return: FlowInfoUpdated object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">FlowInfoUpdated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="FlowDisabled"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDisabled">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">FlowDisabled</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FlowDisabled Event class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FlowDisabled.get_name"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDisabled.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns name of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+<div class="viewcode-block" id="FlowDisabled.get_flow_version"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDisabled.get_flow_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_flow_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns version of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flowVersion</span></div>
+
+<div class="viewcode-block" id="FlowDisabled.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDisabled.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="FlowDisabled.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDisabled.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for FlowDisabled Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregate_id</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for FlowDisabled event</span>
+<span class="sd">            Takes aggregate_id, entity_id and entity_type to build event</span>
+
+<span class="sd">            :param aggregate_id: str object</span>
+<span class="sd">            :param entity_id: str object</span>
+<span class="sd">            :param entity_type: str object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">trigger</span> <span class="o">=</span> <span class="s1">&#39;delete&#39;</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggregate_id</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FlowDisabled.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowDisabled.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns FlowDisabled object built by the builder</span>
+<span class="sd">            :return: FlowDisabled object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">FlowDisabled</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="StepCreated"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepCreated">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">StepCreated</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FlowCreated Event class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StepCreated.get_widget_id"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepCreated.get_widget_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget id of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetId</span></div>
+
+<div class="viewcode-block" id="StepCreated.get_widget_type"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepCreated.get_widget_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget type of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetType</span></div>
+
+<div class="viewcode-block" id="StepCreated.get_widget_name"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepCreated.get_widget_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget name of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetName</span></div>
+
+<div class="viewcode-block" id="StepCreated.get_created_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepCreated.get_created_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_created_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns created by of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">createdBy</span></div>
+
+<div class="viewcode-block" id="StepCreated.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepCreated.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="StepCreated.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepCreated.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for StepCreated Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregate_id</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for StepCreated event</span>
+<span class="sd">            Takes aggregate_id, entity_id and entity_type to build event</span>
+
+<span class="sd">            :param aggregate_id: str object</span>
+<span class="sd">            :param entity_id: str object</span>
+<span class="sd">            :param entity_type: str object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">trigger</span> <span class="o">=</span> <span class="s1">&#39;create&#39;</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggregate_id</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StepCreated.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepCreated.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns StepCreated object built by the builder</span>
+<span class="sd">            :return: StepCreated object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">StepCreated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="StepPositionUpdated"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepPositionUpdated">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">StepPositionUpdated</span><span class="p">(</span><span class="n">BaseFlowFieldUpdate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    StepPositionUpdated Event Class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization method for StepPositionUpdated Event</span>
+<span class="sd">        Takes builder object and sets properties</span>
+
+<span class="sd">        :param builder: Builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">oldPosition</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_old_value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newPosition</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_new_value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StepPositionUpdated.get_old_position"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepPositionUpdated.get_old_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_old_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns old value of the step position</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">oldPosition</span></div>
+
+<div class="viewcode-block" id="StepPositionUpdated.get_new_position"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepPositionUpdated.get_new_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_new_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns new value of the step position</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">newPosition</span></div>
+
+<div class="viewcode-block" id="StepPositionUpdated.get_change"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepPositionUpdated.get_change">[docs]</a>    <span class="k">def</span> <span class="nf">get_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns new value and old value of</span>
+<span class="sd">        the flow step position</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;position&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;old_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_old_position</span><span class="p">(),</span>
+            <span class="s1">&#39;new_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_new_position</span><span class="p">()</span>
+        <span class="p">}}</span></div>
+
+<div class="viewcode-block" id="StepPositionUpdated.get_widget_id"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepPositionUpdated.get_widget_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget id of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetId</span></div>
+
+<div class="viewcode-block" id="StepPositionUpdated.get_widget_type"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepPositionUpdated.get_widget_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget type of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetType</span></div>
+
+<div class="viewcode-block" id="StepPositionUpdated.get_updated_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepPositionUpdated.get_updated_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns updated by of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">updatedBy</span></div>
+
+<div class="viewcode-block" id="StepPositionUpdated.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepPositionUpdated.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="StepPositionUpdated.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepPositionUpdated.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowFieldUpdate</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for StepPositionUpdated Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StepPositionUpdated.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepPositionUpdated.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns StepPositionUpdated object built by the builder</span>
+<span class="sd">            :return: StepPositionUpdated object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">StepPositionUpdated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="StepSizeUpdated"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepSizeUpdated">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">StepSizeUpdated</span><span class="p">(</span><span class="n">BaseFlowFieldUpdate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    StepSizeUpdated Event Class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization method for StepSizeUpdated Event</span>
+<span class="sd">        Takes builder object and sets properties</span>
+
+<span class="sd">        :param builder: Builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">oldSize</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_old_value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newSize</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_new_value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StepSizeUpdated.get_old_size"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepSizeUpdated.get_old_size">[docs]</a>    <span class="k">def</span> <span class="nf">get_old_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns old value of the step size</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">oldSize</span></div>
+
+<div class="viewcode-block" id="StepSizeUpdated.get_new_size"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepSizeUpdated.get_new_size">[docs]</a>    <span class="k">def</span> <span class="nf">get_new_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns new value of the step size</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">newSize</span></div>
+
+<div class="viewcode-block" id="StepSizeUpdated.get_change"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepSizeUpdated.get_change">[docs]</a>    <span class="k">def</span> <span class="nf">get_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns new value and old value</span>
+<span class="sd">        of the flow step size</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;old_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_old_size</span><span class="p">(),</span>
+            <span class="s1">&#39;new_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_new_size</span><span class="p">()</span>
+        <span class="p">}}</span></div>
+
+<div class="viewcode-block" id="StepSizeUpdated.get_widget_id"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepSizeUpdated.get_widget_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget id of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetId</span></div>
+
+<div class="viewcode-block" id="StepSizeUpdated.get_widget_type"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepSizeUpdated.get_widget_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget type of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetType</span></div>
+
+<div class="viewcode-block" id="StepSizeUpdated.get_updated_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepSizeUpdated.get_updated_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns updated by of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">updatedBy</span></div>
+
+<div class="viewcode-block" id="StepSizeUpdated.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepSizeUpdated.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="StepSizeUpdated.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepSizeUpdated.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowFieldUpdate</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for StepSizeUpdated Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StepSizeUpdated.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepSizeUpdated.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns StepSizeUpdated object built by the builder</span>
+<span class="sd">            :return: StepSizeUpdated object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">StepSizeUpdated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="WidgetNameUpdated"><a class="viewcode-back" href="../../flow.events.html#flow.events.WidgetNameUpdated">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">WidgetNameUpdated</span><span class="p">(</span><span class="n">BaseFlowFieldUpdate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    WidgetNameUpdated Event Class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization method for WidgetNameUpdated Event</span>
+<span class="sd">        Takes builder object and sets properties</span>
+
+<span class="sd">        :param builder: Builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">oldName</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_old_value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">newName</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_new_value&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="WidgetNameUpdated.get_old_name"><a class="viewcode-back" href="../../flow.events.html#flow.events.WidgetNameUpdated.get_old_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_old_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns old value of the step widget name</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">oldName</span></div>
+
+<div class="viewcode-block" id="WidgetNameUpdated.get_new_name"><a class="viewcode-back" href="../../flow.events.html#flow.events.WidgetNameUpdated.get_new_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_new_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns new value of the step widget name</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">newName</span></div>
+
+<div class="viewcode-block" id="WidgetNameUpdated.get_change"><a class="viewcode-back" href="../../flow.events.html#flow.events.WidgetNameUpdated.get_change">[docs]</a>    <span class="k">def</span> <span class="nf">get_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns new value and old value</span>
+<span class="sd">        of the step widget name</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;old_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_old_name</span><span class="p">(),</span>
+            <span class="s1">&#39;new_value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_new_name</span><span class="p">()</span>
+        <span class="p">}}</span></div>
+
+<div class="viewcode-block" id="WidgetNameUpdated.get_widget_id"><a class="viewcode-back" href="../../flow.events.html#flow.events.WidgetNameUpdated.get_widget_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget id of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetId</span></div>
+
+<div class="viewcode-block" id="WidgetNameUpdated.get_widget_type"><a class="viewcode-back" href="../../flow.events.html#flow.events.WidgetNameUpdated.get_widget_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget type of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetType</span></div>
+
+<div class="viewcode-block" id="WidgetNameUpdated.get_updated_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.WidgetNameUpdated.get_updated_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns updated by of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">updatedBy</span></div>
+
+<div class="viewcode-block" id="WidgetNameUpdated.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.WidgetNameUpdated.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="WidgetNameUpdated.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.WidgetNameUpdated.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowFieldUpdate</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for WidgetNameUpdated Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="WidgetNameUpdated.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.WidgetNameUpdated.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns WidgetNameUpdated object built by the builder</span>
+<span class="sd">            :return: WidgetNameUpdated object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">WidgetNameUpdated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="StepInfoUpdated"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepInfoUpdated">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">StepInfoUpdated</span><span class="p">(</span><span class="n">BaseFlowUpdated</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    StepInfoUpdated Event Class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization method for StepInfoUpdated Event</span>
+<span class="sd">        Takes builder object and sets properties</span>
+
+<span class="sd">        :param builder: Builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">builder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">changeInfo</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">builder</span><span class="p">,</span> <span class="s1">&#39;_change_info&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StepInfoUpdated.get_widget_id"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepInfoUpdated.get_widget_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget id of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetId</span></div>
+
+<div class="viewcode-block" id="StepInfoUpdated.get_widget_type"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepInfoUpdated.get_widget_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget type of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetType</span></div>
+
+<div class="viewcode-block" id="StepInfoUpdated.get_updated_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepInfoUpdated.get_updated_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns updated by of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">updatedBy</span></div>
+
+<div class="viewcode-block" id="StepInfoUpdated.get_change_info"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepInfoUpdated.get_change_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_change_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns updated info of flow step</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">changeInfo</span></div>
+
+<div class="viewcode-block" id="StepInfoUpdated.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepInfoUpdated.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="StepInfoUpdated.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepInfoUpdated.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowUpdated</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for StepInfoUpdated Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StepInfoUpdated.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepInfoUpdated.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns StepInfoUpdated object built by the builder</span>
+<span class="sd">            :return: StepInfoUpdated object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">StepInfoUpdated</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="StepConnected"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnected">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">StepConnected</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    StepConnected Event class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StepConnected.get_widget_id"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnected.get_widget_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget id of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetId</span></div>
+
+<div class="viewcode-block" id="StepConnected.get_widget_type"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnected.get_widget_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget type of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetType</span></div>
+
+<div class="viewcode-block" id="StepConnected.get_step_connection"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnected.get_step_connection">[docs]</a>    <span class="k">def</span> <span class="nf">get_step_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns step connection of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stepConnection</span></div>
+
+<div class="viewcode-block" id="StepConnected.get_updated_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnected.get_updated_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns updated by of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">updatedBy</span></div>
+
+<div class="viewcode-block" id="StepConnected.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnected.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="StepConnected.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnected.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for StepConnected Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregate_id</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for StepConnected event</span>
+<span class="sd">            Takes aggregate_id, entity_id and entity_type to build event</span>
+
+<span class="sd">            :param aggregate_id: str object</span>
+<span class="sd">            :param entity_id: str object</span>
+<span class="sd">            :param entity_type: str object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">trigger</span> <span class="o">=</span> <span class="s1">&#39;create&#39;</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggregate_id</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StepConnected.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnected.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns StepConnected object built by the builder</span>
+<span class="sd">            :return: StepConnected object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">StepConnected</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="StepRemoved"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepRemoved">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">StepRemoved</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    StepRemoved Event class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StepRemoved.get_widget_id"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepRemoved.get_widget_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget id of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetId</span></div>
+
+<div class="viewcode-block" id="StepRemoved.get_widget_type"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepRemoved.get_widget_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget type of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetType</span></div>
+
+<div class="viewcode-block" id="StepRemoved.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepRemoved.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="StepRemoved.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepRemoved.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for StepRemoved Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregate_id</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for StepConnectionRemoved event</span>
+<span class="sd">            Takes aggregate_id, entity_id and entity_type to build event</span>
+
+<span class="sd">            :param aggregate_id: str object</span>
+<span class="sd">            :param entity_id: str object</span>
+<span class="sd">            :param entity_type: str object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">trigger</span> <span class="o">=</span> <span class="s1">&#39;delete&#39;</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggregate_id</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StepRemoved.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepRemoved.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns StepRemoved object built by the builder</span>
+<span class="sd">            :return: StepRemoved object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">StepRemoved</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="StepConnectionRemoved"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnectionRemoved">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">StepConnectionRemoved</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    StepConnectionRemoved Event class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="StepConnectionRemoved.get_widget_id"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnectionRemoved.get_widget_id">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget id of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetId</span></div>
+
+<div class="viewcode-block" id="StepConnectionRemoved.get_widget_type"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnectionRemoved.get_widget_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget type of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widgetType</span></div>
+
+<div class="viewcode-block" id="StepConnectionRemoved.get_updated_by"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnectionRemoved.get_updated_by">[docs]</a>    <span class="k">def</span> <span class="nf">get_updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns updated by of the flow step</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">updatedBy</span></div>
+
+<div class="viewcode-block" id="StepConnectionRemoved.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnectionRemoved.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="StepConnectionRemoved.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnectionRemoved.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for StepConnectionRemoved Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregate_id</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for StepConnectionRemoved event</span>
+<span class="sd">            Takes aggregate_id, entity_id and entity_type to build event</span>
+
+<span class="sd">            :param aggregate_id: str object</span>
+<span class="sd">            :param entity_id: str object</span>
+<span class="sd">            :param entity_type: str object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">trigger</span> <span class="o">=</span> <span class="s1">&#39;delete&#39;</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggregate_id</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="StepConnectionRemoved.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.StepConnectionRemoved.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns StepConnectionRemoved object built by the builder</span>
+<span class="sd">            :return: StepConnectionRemoved object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">StepConnectionRemoved</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="FlowRestored"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowRestored">[docs]</a><span class="nd">@event</span>
+<span class="k">class</span> <span class="nc">FlowRestored</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FlowRestored Event class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FlowRestored.get_name"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowRestored.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns name of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span></div>
+
+<div class="viewcode-block" id="FlowRestored.get_flow_version"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowRestored.get_flow_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_flow_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns version of the flow</span>
+
+<span class="sd">        :return: str object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">flowVersion</span></div>
+
+<div class="viewcode-block" id="FlowRestored.get_metrics"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowRestored.get_metrics">[docs]</a>    <span class="k">def</span> <span class="nf">get_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns metric lists for the event</span>
+
+<span class="sd">        :return: List[Metric]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[]</span></div>
+
+<div class="viewcode-block" id="FlowRestored.Builder"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowRestored.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">(</span><span class="n">BaseFlowEvent</span><span class="o">.</span><span class="n">Builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for FlowRestored Event</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregate_id</span><span class="p">,</span> <span class="n">entity_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">entity_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for FlowRestored event</span>
+<span class="sd">            Takes aggregate_id, entity_id and entity_type to build event</span>
+
+<span class="sd">            :param aggregate_id: str object</span>
+<span class="sd">            :param entity_id: str object</span>
+<span class="sd">            :param entity_type: str object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="n">trigger</span> <span class="o">=</span> <span class="s1">&#39;update&#39;</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">aggregate_id</span><span class="p">,</span> <span class="n">trigger</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">,</span> <span class="n">entity_type</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FlowRestored.Builder.build"><a class="viewcode-back" href="../../flow.events.html#flow.events.FlowRestored.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns FlowRestored object built by the builder</span>
+<span class="sd">            :return: FlowRestored object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">FlowRestored</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, UDPlatforms Inc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

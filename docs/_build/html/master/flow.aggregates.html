@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>aggregates &mdash; flow  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="api" href="flow.api.html" />
+    <link rel="prev" title="widget_gateway" href="flow.gateways.widget_gateway.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> flow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="flow.html">flow</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="flow.gateways.html">gateways</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">aggregates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.api.html">api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.constants.html">constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.containers.html">containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.events.html">events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.exceptions.html">exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.repositories.html">repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.schemas.html">schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.services.html">services</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">flow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="flow.html">flow</a> &raquo;</li>
+      <li>aggregates</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/flow.aggregates.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-flow.aggregates">
+<span id="aggregates"></span><h1>aggregates<a class="headerlink" href="#module-flow.aggregates" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.aggregates.Flow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.aggregates.</span></span><span class="sig-name descname"><span class="pre">Flow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rakizo.event_essentials.aggregates.AbstractAggregate</span></code></p>
+<p>Flow Aggregate class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Builder class for Flow</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.application">
+<span class="sig-name descname"><span class="pre">application</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">application</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.application"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.application" title="Permalink to this definition"></a></dt>
+<dd><p>Takes application and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>application</strong> – dict object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns Flow object built by the builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Flow object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.created_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.created_at" title="Permalink to this definition"></a></dt>
+<dd><p>Takes flow creation date and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>date</strong> – datetime object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.created_by">
+<span class="sig-name descname"><span class="pre">created_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow_created_by</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.created_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.created_by" title="Permalink to this definition"></a></dt>
+<dd><p>Takes flow_created_by and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flow_created_by</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.deleted_at">
+<span class="sig-name descname"><span class="pre">deleted_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.deleted_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.deleted_at" title="Permalink to this definition"></a></dt>
+<dd><p>Takes deleted_at and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>date</strong> – datetime object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow_description</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.description" title="Permalink to this definition"></a></dt>
+<dd><p>Takes flow_description and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flow_description</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.id">
+<span class="sig-name descname"><span class="pre">id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.id" title="Permalink to this definition"></a></dt>
+<dd><p>Takes id and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.name" title="Permalink to this definition"></a></dt>
+<dd><p>Takes flow_name and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flow_name</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.steps">
+<span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">steps</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.steps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.steps" title="Permalink to this definition"></a></dt>
+<dd><p>Takes steps and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>steps</strong> – list object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.updated_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.updated_at" title="Permalink to this definition"></a></dt>
+<dd><p>Takes flow update date and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>date</strong> – datetime object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.updated_by">
+<span class="sig-name descname"><span class="pre">updated_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Takes user_id and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user_id</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.Builder.version">
+<span class="sig-name descname"><span class="pre">version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow_version</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.Builder.version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.Builder.version" title="Permalink to this definition"></a></dt>
+<dd><p>Takes flow_version and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flow_version</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.add_step">
+<span class="sig-name descname"><span class="pre">add_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow.aggregates.Step" title="flow.aggregates.Step"><span class="pre">flow.aggregates.Step</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.add_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.add_step" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step and add step in the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>step</strong> – Step object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flow object, Step object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.add_step_connection">
+<span class="sig-name descname"><span class="pre">add_step_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.add_step_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.add_step_connection" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step_id, connection_id and adds
+step connection</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>step_id</strong> – str object</p></li>
+<li><p><strong>connection_id</strong> – str object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flow object, Step object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.delete" title="Permalink to this definition"></a></dt>
+<dd><p>Generates flow disable event
+for flow deletion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>boolean object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.delete_step">
+<span class="sig-name descname"><span class="pre">delete_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.delete_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.delete_step" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step_id and delete step
+in the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>step_id</strong> – str object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flow object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.get_application">
+<span class="sig-name descname"><span class="pre">get_application</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.get_application"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.get_application" title="Permalink to this definition"></a></dt>
+<dd><p>Returns application</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.get_deleted_at">
+<span class="sig-name descname"><span class="pre">get_deleted_at</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.get_deleted_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.get_deleted_at" title="Permalink to this definition"></a></dt>
+<dd><p>Returns flow deleted at</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>datetime object or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.get_description">
+<span class="sig-name descname"><span class="pre">get_description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.get_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.get_description" title="Permalink to this definition"></a></dt>
+<dd><p>Returns flow description</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.get_info" title="Permalink to this definition"></a></dt>
+<dd><p>Returns flow information
+:return: dict object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns flow name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.get_steps">
+<span class="sig-name descname"><span class="pre">get_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.get_steps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.get_steps" title="Permalink to this definition"></a></dt>
+<dd><p>Returns flow steps</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.get_version">
+<span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.get_version" title="Permalink to this definition"></a></dt>
+<dd><p>Returns flow version</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.merge">
+<span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.merge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.merge" title="Permalink to this definition"></a></dt>
+<dd><p>Sets update fields for the Flow and returns Flow object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flow</strong> – Flow object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flow object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.recover">
+<span class="sig-name descname"><span class="pre">recover</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.recover"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.recover" title="Permalink to this definition"></a></dt>
+<dd><p>Generates flow recovered event
+for flow recovery</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>boolean object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.remove_step_connection">
+<span class="sig-name descname"><span class="pre">remove_step_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">connection_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.remove_step_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.remove_step_connection" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step_id, connection_id and step removes
+connection of that step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>step_id</strong> – str object</p></li>
+<li><p><strong>connection_id</strong> – str object</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Step object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.serialized_info">
+<span class="sig-name descname"><span class="pre">serialized_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">include_disabled_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.serialized_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.serialized_info" title="Permalink to this definition"></a></dt>
+<dd><p>Takes include_disabled_step and returns
+serialized flow information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>include_disabled_step</strong> – bool object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.set_name">
+<span class="sig-name descname"><span class="pre">set_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.set_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.set_name" title="Permalink to this definition"></a></dt>
+<dd><p>Takes name and sets property</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flow object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Flow.update_step">
+<span class="sig-name descname"><span class="pre">update_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#flow.aggregates.Step" title="flow.aggregates.Step"><span class="pre">flow.aggregates.Step</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Flow.update_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Flow.update_step" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step and update step in the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>step</strong> – Step object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Flow object, Step object, Old step object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.aggregates.Step">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.aggregates.</span></span><span class="sig-name descname"><span class="pre">Step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rakizo.event_essentials.aggregates.AbstractEntity</span></code></p>
+<p>Step class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Builder class for Step</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns Step object built by the builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Step object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder.connections">
+<span class="sig-name descname"><span class="pre">connections</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connections</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder.connections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder.connections" title="Permalink to this definition"></a></dt>
+<dd><p>Takes connections and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connections</strong> – list object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder.created_at">
+<span class="sig-name descname"><span class="pre">created_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder.created_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder.created_at" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step creation date and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>date</strong> – datetime object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder.created_by">
+<span class="sig-name descname"><span class="pre">created_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_created_by</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder.created_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder.created_by" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step_created_by and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>step_created_by</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder.deleted_at">
+<span class="sig-name descname"><span class="pre">deleted_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder.deleted_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder.deleted_at" title="Permalink to this definition"></a></dt>
+<dd><p>Takes deleted_at and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>date</strong> – datetime object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder.id">
+<span class="sig-name descname"><span class="pre">id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder.id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder.id" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step_id and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>step_id</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder.position">
+<span class="sig-name descname"><span class="pre">position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">position</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder.position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder.position" title="Permalink to this definition"></a></dt>
+<dd><p>Takes position and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>position</strong> – dict object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder.size">
+<span class="sig-name descname"><span class="pre">size</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder.size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder.size" title="Permalink to this definition"></a></dt>
+<dd><p>Takes size and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>size</strong> – dict object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder.updated_at">
+<span class="sig-name descname"><span class="pre">updated_at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder.updated_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder.updated_at" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step update date and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>date</strong> – datetime object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder.updated_by">
+<span class="sig-name descname"><span class="pre">updated_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_updated_by</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder.updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder.updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step_updated_by and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>step_updated_by</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.Builder.widget">
+<span class="sig-name descname"><span class="pre">widget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.Builder.widget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.Builder.widget" title="Permalink to this definition"></a></dt>
+<dd><p>Takes widget and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>widget</strong> – Widget object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.add_connection">
+<span class="sig-name descname"><span class="pre">add_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.add_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.add_connection" title="Permalink to this definition"></a></dt>
+<dd><p>Takes new step connection_id, compares with old one then sets and generates
+StepConnected event and append it to event list and
+finally returns Step object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connection_id</strong> – str object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Step object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.get_connections">
+<span class="sig-name descname"><span class="pre">get_connections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.get_connections"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.get_connections" title="Permalink to this definition"></a></dt>
+<dd><p>Returns step connections</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>list object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.get_deleted_at">
+<span class="sig-name descname"><span class="pre">get_deleted_at</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.get_deleted_at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.get_deleted_at" title="Permalink to this definition"></a></dt>
+<dd><p>Returns step deleted at</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>datetime object or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.get_info" title="Permalink to this definition"></a></dt>
+<dd><p>Returns flow step information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.get_position">
+<span class="sig-name descname"><span class="pre">get_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.get_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.get_position" title="Permalink to this definition"></a></dt>
+<dd><p>Returns step position</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.get_size">
+<span class="sig-name descname"><span class="pre">get_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.get_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.get_size" title="Permalink to this definition"></a></dt>
+<dd><p>Returns step size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.get_widget">
+<span class="sig-name descname"><span class="pre">get_widget</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.get_widget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.get_widget" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Widget object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.is_removed">
+<span class="sig-name descname"><span class="pre">is_removed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.is_removed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.is_removed" title="Permalink to this definition"></a></dt>
+<dd><p>Checks if step is removed or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>boolean object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.merge">
+<span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.merge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.merge" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step and sets update fields for the Step
+and returns Step object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>step</strong> – Step object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Step object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.remove">
+<span class="sig-name descname"><span class="pre">remove</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.remove"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.remove" title="Permalink to this definition"></a></dt>
+<dd><p>Disables step and generates
+flow step removed event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Step object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.remove_connection">
+<span class="sig-name descname"><span class="pre">remove_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connection_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.remove_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.remove_connection" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step connection_id, removes it and generates
+StepConnectionRemoved event and append it to event list and
+finally returns Step object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>connection_id</strong> – str object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Step object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Step.serialized_info">
+<span class="sig-name descname"><span class="pre">serialized_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Step.serialized_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Step.serialized_info" title="Permalink to this definition"></a></dt>
+<dd><p>Returns serialized step information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.aggregates.Widget">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.aggregates.</span></span><span class="sig-name descname"><span class="pre">Widget</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Widget"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Widget class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.aggregates.Widget.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><a class="reference internal" href="_modules/flow/aggregates.html#Widget.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Builder class for Widget</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Widget.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Widget.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns Widget object built by the builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Widget object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Widget.Builder.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Widget.Builder.name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget.Builder.name" title="Permalink to this definition"></a></dt>
+<dd><p>Takes name and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Widget.Builder.type">
+<span class="sig-name descname"><span class="pre">type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Widget.Builder.type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget.Builder.type" title="Permalink to this definition"></a></dt>
+<dd><p>Takes widget_type and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>widget_type</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Widget.Builder.version">
+<span class="sig-name descname"><span class="pre">version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">version</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Widget.Builder.version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget.Builder.version" title="Permalink to this definition"></a></dt>
+<dd><p>Takes version and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>version</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Widget.get_info">
+<span class="sig-name descname"><span class="pre">get_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Widget.get_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget.get_info" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Widget.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Widget.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the widget name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Widget.get_type">
+<span class="sig-name descname"><span class="pre">get_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Widget.get_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget.get_type" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Widget.get_version">
+<span class="sig-name descname"><span class="pre">get_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Widget.get_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget.get_version" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget version</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>string object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Widget.is_flow">
+<span class="sig-name descname"><span class="pre">is_flow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Widget.is_flow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget.is_flow" title="Permalink to this definition"></a></dt>
+<dd><p>Checks widget type and
+returns boolean</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>bool object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.aggregates.Widget.set_name">
+<span class="sig-name descname"><span class="pre">set_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/aggregates.html#Widget.set_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.aggregates.Widget.set_name" title="Permalink to this definition"></a></dt>
+<dd><p>Takes new name, compares with
+old one then sets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_name</strong> – String object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Widget object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="flow.gateways.widget_gateway.html" class="btn btn-neutral float-left" title="widget_gateway" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="flow.api.html" class="btn btn-neutral float-right" title="api" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, UDPlatforms Inc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

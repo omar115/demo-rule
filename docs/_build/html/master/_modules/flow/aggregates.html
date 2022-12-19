@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>flow.aggregates &mdash; flow  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> flow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../flow.html">flow</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">flow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>flow.aggregates</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for flow.aggregates</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">g</span>
+<span class="kn">from</span> <span class="nn">rakizo.event_essentials.aggregates</span> <span class="kn">import</span> <span class="n">AbstractAggregate</span><span class="p">,</span> <span class="n">AbstractEntity</span>
+<span class="kn">from</span> <span class="nn">rakizo.event_essentials.application</span> <span class="kn">import</span> <span class="n">RakizoApplication</span>
+<span class="kn">from</span> <span class="nn">rakizo.event_essentials.helpers.utils</span> <span class="kn">import</span> <span class="n">generate_date_time</span><span class="p">,</span> <span class="n">datetime_conversion</span>
+<span class="kn">from</span> <span class="nn">rakizo.logging_config.logging_config</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+
+<span class="kn">from</span> <span class="nn">flow.constants</span> <span class="kn">import</span> <span class="n">DEFAULT_VERSION</span><span class="p">,</span> <span class="n">FlowUpdatedEvents</span><span class="p">,</span> <span class="n">StepUpdatedEvents</span><span class="p">,</span> <span class="n">WidgetType</span>
+<span class="kn">from</span> <span class="nn">flow.events</span> <span class="kn">import</span> <span class="p">(</span><span class="n">FlowCreated</span><span class="p">,</span> <span class="n">FlowInfoUpdated</span><span class="p">,</span> <span class="n">StepCreated</span><span class="p">,</span> <span class="n">StepInfoUpdated</span><span class="p">,</span> <span class="n">StepConnected</span><span class="p">,</span> <span class="n">StepRemoved</span><span class="p">,</span>
+                         <span class="n">StepConnectionRemoved</span><span class="p">,</span> <span class="n">FlowDisabled</span><span class="p">,</span> <span class="n">FlowRestored</span><span class="p">,</span> <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">flow.exceptions</span> <span class="kn">import</span> <span class="n">StepNotFoundException</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="Widget"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget">[docs]</a><span class="k">class</span> <span class="nc">Widget</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Widget class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization method for Widget class</span>
+<span class="sd">        Takes builder</span>
+
+<span class="sd">        :param builder: Builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_version</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_version</span>
+
+<div class="viewcode-block" id="Widget.is_flow"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget.is_flow">[docs]</a>    <span class="k">def</span> <span class="nf">is_flow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks widget type and</span>
+<span class="sd">        returns boolean</span>
+
+<span class="sd">        :return: bool object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">==</span> <span class="n">WidgetType</span><span class="o">.</span><span class="n">FLOW</span><span class="o">.</span><span class="n">value</span></div>
+
+<div class="viewcode-block" id="Widget.set_name"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget.set_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes new name, compares with</span>
+<span class="sd">        old one then sets</span>
+
+<span class="sd">        :param new_name: String object</span>
+<span class="sd">        :return: Widget object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">new_name</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Widget.get_name"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the widget name</span>
+
+<span class="sd">        :return: string object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+
+<div class="viewcode-block" id="Widget.get_type"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget.get_type">[docs]</a>    <span class="k">def</span> <span class="nf">get_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget type</span>
+
+<span class="sd">        :return: string object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span></div>
+
+<div class="viewcode-block" id="Widget.get_version"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget.get_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget version</span>
+
+<span class="sd">        :return: string object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_version</span></div>
+
+<div class="viewcode-block" id="Widget.get_info"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget.get_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget information</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_version</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_type</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Widget.Builder"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for Widget</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for Builder class</span>
+<span class="sd">            which resets builder properties</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Widget.Builder.name"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget.Builder.name">[docs]</a>        <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes name and sets property in builder</span>
+
+<span class="sd">            :param name: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Widget.Builder.type"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget.Builder.type">[docs]</a>        <span class="k">def</span> <span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_type</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes widget_type and sets property in builder</span>
+
+<span class="sd">            :param widget_type: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="n">widget_type</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Widget.Builder.version"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget.Builder.version">[docs]</a>        <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">version</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes version and sets property in builder</span>
+
+<span class="sd">            :param version: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_version</span> <span class="o">=</span> <span class="n">version</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+        <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Resets builder properties before</span>
+<span class="sd">            constructing Step</span>
+
+<span class="sd">            :return: None</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_type</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_version</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Widget.Builder.build"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Widget.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns Widget object built by the builder</span>
+
+<span class="sd">            :return: Widget object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">Widget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="Step"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step">[docs]</a><span class="k">class</span> <span class="nc">Step</span><span class="p">(</span><span class="n">AbstractEntity</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Step class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization method for Step class</span>
+<span class="sd">        Takes builder</span>
+
+<span class="sd">        :param builder: Builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">created_at</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">_created_at</span><span class="p">,</span> <span class="n">updated_at</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">_updated_at</span><span class="p">,</span>
+                         <span class="n">created_by</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">_created_by</span><span class="p">,</span> <span class="n">updated_by</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">_updated_by</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_connections</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_connections</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="ow">or</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Step.remove"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.remove">[docs]</a>    <span class="k">def</span> <span class="nf">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Disables step and generates</span>
+<span class="sd">        flow step removed event</span>
+
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="o">=</span> <span class="n">generate_date_time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.is_removed"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.is_removed">[docs]</a>    <span class="k">def</span> <span class="nf">is_removed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if step is removed or not</span>
+
+<span class="sd">        :return: boolean object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Step.add_connection"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.add_connection">[docs]</a>    <span class="k">def</span> <span class="nf">add_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes new step connection_id, compares with old one then sets and generates</span>
+<span class="sd">        StepConnected event and append it to event list and</span>
+<span class="sd">        finally returns Step object</span>
+
+<span class="sd">        :param connection_id: str object</span>
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Adding step connection&quot;</span><span class="p">)</span>
+        <span class="n">old_connections</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_connections</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">old_connections</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">(</span><span class="n">connection_id</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_connections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">connection_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_step_connected_event</span><span class="p">(</span><span class="n">connection_id</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">generate_date_time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Step [</span><span class="si">%s</span><span class="s2">] connections [</span><span class="si">%s</span><span class="s2">] is successfully updated by adding [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">old_connections</span><span class="p">,</span>
+                         <span class="n">connection_id</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Skipping step connection add. No change&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.remove_connection"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.remove_connection">[docs]</a>    <span class="k">def</span> <span class="nf">remove_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes step connection_id, removes it and generates</span>
+<span class="sd">        StepConnectionRemoved event and append it to event list and</span>
+<span class="sd">        finally returns Step object</span>
+
+<span class="sd">        :param connection_id: str object</span>
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Removing step connection&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connections</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">(</span><span class="n">connection_id</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_connections</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">connection_id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">generate_date_time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_step_connection_removed_event</span><span class="p">(</span><span class="n">connection_id</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Step [</span><span class="si">%s</span><span class="s2">] connection [</span><span class="si">%s</span><span class="s2">] is successfully removed&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">connection_id</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Skipping step connection remove. No change&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.merge"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.merge">[docs]</a>    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes step and sets update fields for the Step</span>
+<span class="sd">        and returns Step object</span>
+
+<span class="sd">        :param step: Step object</span>
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Updating step [</span><span class="si">%s</span><span class="s2">] by user [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">step</span><span class="o">.</span><span class="n">get_updated_by</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_size</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">get_size</span><span class="p">())</span><span class="o">.</span><span class="n">_set_position</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">get_position</span><span class="p">())</span><span class="o">.</span><span class="n">_set_widget_name</span><span class="p">(</span>
+            <span class="n">step</span><span class="o">.</span><span class="n">get_widget</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_step_updated_event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">generate_date_time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">get_updated_by</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.get_widget"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.get_widget">[docs]</a>    <span class="k">def</span> <span class="nf">get_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns widget object</span>
+
+<span class="sd">        :return: Widget object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span></div>
+
+<div class="viewcode-block" id="Step.get_position"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.get_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns step position</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span></div>
+
+<div class="viewcode-block" id="Step.get_size"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.get_size">[docs]</a>    <span class="k">def</span> <span class="nf">get_size</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns step size</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span></div>
+
+<div class="viewcode-block" id="Step.get_connections"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.get_connections">[docs]</a>    <span class="k">def</span> <span class="nf">get_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns step connections</span>
+
+<span class="sd">        :return: list object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connections</span></div>
+
+<div class="viewcode-block" id="Step.get_deleted_at"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.get_deleted_at">[docs]</a>    <span class="k">def</span> <span class="nf">get_deleted_at</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns step deleted at</span>
+
+<span class="sd">        :return: datetime object or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span></div>
+
+<div class="viewcode-block" id="Step.get_info"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.get_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns flow step information</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;widget&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="o">.</span><span class="n">get_info</span><span class="p">(),</span> <span class="s1">&#39;position&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">,</span>
+            <span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span><span class="p">,</span> <span class="s1">&#39;connections&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connections</span><span class="p">,</span> <span class="s1">&#39;created_by&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span><span class="p">,</span>
+            <span class="s1">&#39;updated_by&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span><span class="p">,</span> <span class="s1">&#39;created_at&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span><span class="p">,</span> <span class="s1">&#39;updated_at&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span><span class="p">,</span>
+            <span class="s1">&#39;deleted_at&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Step.serialized_info"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.serialized_info">[docs]</a>    <span class="k">def</span> <span class="nf">serialized_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns serialized step information</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_info</span><span class="p">()</span>
+        <span class="n">step</span><span class="p">[</span><span class="s1">&#39;widget&#39;</span><span class="p">][</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span>
+        <span class="n">step</span><span class="p">[</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime_conversion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">created_at</span><span class="p">)</span>
+        <span class="n">step</span><span class="p">[</span><span class="s1">&#39;updated_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime_conversion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span>
+        <span class="n">step</span><span class="p">[</span><span class="s1">&#39;deleted_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime_conversion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span>
+        <span class="k">return</span> <span class="n">step</span></div>
+
+    <span class="k">def</span> <span class="nf">_set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_position</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes new step position, compares with old one then sets and generates</span>
+<span class="sd">        StepPositionUpdated event and append it to event list and</span>
+<span class="sd">        finally returns Step object</span>
+
+<span class="sd">        :param new_position: dict object</span>
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Changing step position&quot;</span><span class="p">)</span>
+        <span class="n">old_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span>
+        <span class="k">if</span> <span class="n">new_position</span> <span class="ow">and</span> <span class="p">(</span><span class="n">new_position</span> <span class="o">!=</span> <span class="n">old_position</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">new_position</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_field_updated_event</span><span class="p">(</span>
+                <span class="n">StepUpdatedEvents</span><span class="p">(</span><span class="s1">&#39;step_position&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">event_class</span><span class="p">,</span> <span class="n">old_position</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_position</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Step [</span><span class="si">%s</span><span class="s2">] position [</span><span class="si">%s</span><span class="s2">] is successfully updated with [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">old_position</span><span class="p">,</span>
+                         <span class="n">new_position</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Skipping Step position change. No change&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_set_widget_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes new step widget name, compares with old one then sets and generates</span>
+<span class="sd">        StepNameUpdated event and append it to event list and</span>
+<span class="sd">        finally returns Step object</span>
+
+<span class="sd">        :param new_name: String object</span>
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Changing step widget name&quot;</span><span class="p">)</span>
+        <span class="n">old_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">new_name</span> <span class="ow">and</span> <span class="p">(</span><span class="n">new_name</span> <span class="o">!=</span> <span class="n">old_name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="o">.</span><span class="n">set_name</span><span class="p">(</span><span class="n">new_name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_field_updated_event</span><span class="p">(</span>
+                <span class="n">StepUpdatedEvents</span><span class="p">(</span><span class="s1">&#39;widget_name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">event_class</span><span class="p">,</span> <span class="n">old_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Step [</span><span class="si">%s</span><span class="s2">] widget name [</span><span class="si">%s</span><span class="s2">] is successfully updated with [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">old_name</span><span class="p">,</span>
+                         <span class="n">new_name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Skipping Step widget name change. No change&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_set_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_size</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes new step size, compares with old one then sets and generates</span>
+<span class="sd">        StepSizeUpdated event and append it to event list and</span>
+<span class="sd">        finally returns Step object</span>
+
+<span class="sd">        :param new_size: dict object</span>
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Changing step size&quot;</span><span class="p">)</span>
+        <span class="n">old_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span>
+        <span class="k">if</span> <span class="n">new_size</span> <span class="ow">and</span> <span class="p">(</span><span class="n">new_size</span> <span class="o">!=</span> <span class="n">old_size</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="n">new_size</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_field_updated_event</span><span class="p">(</span>
+                <span class="n">StepUpdatedEvents</span><span class="p">(</span><span class="s1">&#39;step_size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">event_class</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_size</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Step [</span><span class="si">%s</span><span class="s2">] size [</span><span class="si">%s</span><span class="s2">] is successfully updated with [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span>
+                         <span class="n">new_size</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Skipping Step size change. No change&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_generate_step_connected_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes connection_id, generates and returns Step Connected Event</span>
+
+<span class="sd">        :param connection_id: string object</span>
+<span class="sd">        :return: StepConnected object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">StepConnected</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">triggered_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">widget_id</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">widget_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span><span class="o">.</span><span class="n">step_connection</span><span class="p">(</span><span class="n">connection_id</span><span class="p">)</span><span class="o">.</span><span class="n">updated_by</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate_step_connection_removed_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connection_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>  <span class="c1"># pylint: disable=C0103</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes connection_id, generates and returns</span>
+<span class="sd">        StepConnectionRemoved Event</span>
+
+<span class="sd">        :param connection_id: string object</span>
+<span class="sd">        :return: StepConnectionRemoved object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">StepConnectionRemoved</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">triggered_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">widget_id</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">widget_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span><span class="o">.</span><span class="n">step_connection</span><span class="p">(</span><span class="n">connection_id</span><span class="p">)</span><span class="o">.</span><span class="n">updated_by</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate_field_updated_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">old_value</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes event class, old value, new value, generates and returns Step Updated Events</span>
+
+<span class="sd">        :param event_class: Event class</span>
+<span class="sd">        :param old_value: Any object</span>
+<span class="sd">        :param new_value: Any object</span>
+<span class="sd">        :return: Event object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">event_class</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">triggered_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">widget_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">widget_type</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span><span class="o">.</span><span class="n">updated_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">old_value</span><span class="p">(</span><span class="n">old_value</span><span class="p">)</span><span class="o">.</span><span class="n">new_value</span><span class="p">(</span>
+            <span class="n">new_value</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate_step_updated_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates event for step update</span>
+
+<span class="sd">        :return: StepInfoUpdated Event object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">updated_info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
+            <span class="n">updated_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">event</span><span class="o">.</span><span class="n">get_change</span><span class="p">()</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="s1">&#39;get_change&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="n">updated_info</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">StepInfoUpdated</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">triggered_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">widget_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">widget_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_widget</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span><span class="o">.</span><span class="n">updated_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">change_info</span><span class="p">(</span>
+                <span class="n">updated_info</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Step.Builder"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for Step</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for Builder class</span>
+<span class="sd">            which resets builder properties</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Step.Builder.id"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder.id">[docs]</a>        <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_id</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes step_id and sets property in builder</span>
+
+<span class="sd">            :param step_id: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="n">step_id</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.Builder.widget"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder.widget">[docs]</a>        <span class="k">def</span> <span class="nf">widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes widget and sets property in builder</span>
+
+<span class="sd">            :param widget: Widget object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span> <span class="o">=</span> <span class="n">widget</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.Builder.position"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder.position">[docs]</a>        <span class="k">def</span> <span class="nf">position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes position and sets property in builder</span>
+
+<span class="sd">            :param position: dict object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="n">position</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.Builder.size"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder.size">[docs]</a>        <span class="k">def</span> <span class="nf">size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes size and sets property in builder</span>
+
+<span class="sd">            :param size: dict object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="n">size</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.Builder.connections"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder.connections">[docs]</a>        <span class="k">def</span> <span class="nf">connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">connections</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes connections and sets property in builder</span>
+
+<span class="sd">            :param connections: list object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_connections</span> <span class="o">=</span> <span class="n">connections</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.Builder.created_by"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder.created_by">[docs]</a>        <span class="k">def</span> <span class="nf">created_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_created_by</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes step_created_by and sets property in builder</span>
+
+<span class="sd">            :param step_created_by: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_created_by</span> <span class="o">=</span> <span class="n">step_created_by</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.Builder.updated_by"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder.updated_by">[docs]</a>        <span class="k">def</span> <span class="nf">updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_updated_by</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes step_updated_by and sets property in builder</span>
+
+<span class="sd">            :param step_updated_by: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_updated_by</span> <span class="o">=</span> <span class="n">step_updated_by</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.Builder.created_at"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder.created_at">[docs]</a>        <span class="k">def</span> <span class="nf">created_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes step creation date and sets property in builder</span>
+
+<span class="sd">            :param date: datetime object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_created_at</span> <span class="o">=</span> <span class="n">date</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.Builder.updated_at"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder.updated_at">[docs]</a>        <span class="k">def</span> <span class="nf">updated_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes step update date and sets property in builder</span>
+
+<span class="sd">            :param date: datetime object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_updated_at</span> <span class="o">=</span> <span class="n">date</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Step.Builder.deleted_at"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder.deleted_at">[docs]</a>        <span class="k">def</span> <span class="nf">deleted_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes deleted_at and sets property in builder</span>
+
+<span class="sd">            :param date: datetime object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="o">=</span> <span class="n">date</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+        <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Resets builder properties before</span>
+<span class="sd">            constructing Step</span>
+
+<span class="sd">            :return: None</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_widget</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_size</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_position</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_connections</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_created_by</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_updated_by</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_created_at</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_updated_at</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Step.Builder.build"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Step.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns Step object built by the builder</span>
+
+<span class="sd">            :return: Step object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">Step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+
+
+<div class="viewcode-block" id="Flow"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow">[docs]</a><span class="k">class</span> <span class="nc">Flow</span><span class="p">(</span><span class="n">AbstractAggregate</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Flow Aggregate class</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">builder</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialization method for Flow Aggregate class</span>
+<span class="sd">        Takes builder and generates corresponding events</span>
+
+<span class="sd">        :param builder: Builder object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">_id</span><span class="p">,</span> <span class="n">created_at</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">_created_at</span><span class="p">,</span> <span class="n">updated_at</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">_updated_at</span><span class="p">,</span>
+                         <span class="n">created_by</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">_created_by</span><span class="p">,</span> <span class="n">updated_by</span><span class="o">=</span><span class="n">builder</span><span class="o">.</span><span class="n">_updated_by</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_version</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_version</span> <span class="ow">or</span> <span class="n">DEFAULT_VERSION</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_application</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_application</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_steps</span> <span class="k">if</span> <span class="n">builder</span><span class="o">.</span><span class="n">_steps</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="ow">or</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">builder</span><span class="o">.</span><span class="n">_id</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_flow_created_event</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully created flow [</span><span class="si">%s</span><span class="s2">] with name [</span><span class="si">%s</span><span class="s2">] created by [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Flow.get_name"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.get_name">[docs]</a>    <span class="k">def</span> <span class="nf">get_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns flow name</span>
+
+<span class="sd">        :return: string object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span></div>
+
+<div class="viewcode-block" id="Flow.set_name"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.set_name">[docs]</a>    <span class="k">def</span> <span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes name and sets property</span>
+
+<span class="sd">        :param name: string object</span>
+<span class="sd">        :return: Flow object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.get_version"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.get_version">[docs]</a>    <span class="k">def</span> <span class="nf">get_version</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns flow version</span>
+
+<span class="sd">        :return: string object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_version</span></div>
+
+<div class="viewcode-block" id="Flow.get_description"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.get_description">[docs]</a>    <span class="k">def</span> <span class="nf">get_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns flow description</span>
+
+<span class="sd">        :return: string object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span></div>
+
+<div class="viewcode-block" id="Flow.get_application"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.get_application">[docs]</a>    <span class="k">def</span> <span class="nf">get_application</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns application</span>
+
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application</span></div>
+
+<div class="viewcode-block" id="Flow.get_steps"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.get_steps">[docs]</a>    <span class="k">def</span> <span class="nf">get_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns flow steps</span>
+
+<span class="sd">        :return: list object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span></div>
+
+<div class="viewcode-block" id="Flow.get_deleted_at"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.get_deleted_at">[docs]</a>    <span class="k">def</span> <span class="nf">get_deleted_at</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns flow deleted at</span>
+
+<span class="sd">        :return: datetime object or None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span></div>
+
+<div class="viewcode-block" id="Flow.get_info"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.get_info">[docs]</a>    <span class="k">def</span> <span class="nf">get_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns flow information</span>
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">,</span> <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_version</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">,</span>
+            <span class="s1">&#39;steps&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">step</span><span class="o">.</span><span class="n">get_info</span><span class="p">()</span> <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">,</span>
+            <span class="s1">&#39;created_by&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_by</span><span class="p">,</span> <span class="s1">&#39;updated_by&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span><span class="p">,</span> <span class="s1">&#39;application&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">,</span>
+            <span class="s1">&#39;created_at&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">created_at</span><span class="p">,</span> <span class="s1">&#39;updated_at&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span><span class="p">,</span> <span class="s1">&#39;deleted_at&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Flow.add_step"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.add_step">[docs]</a>    <span class="k">def</span> <span class="nf">add_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="n">Step</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes step and add step in the flow</span>
+
+<span class="sd">        :param step: Step object</span>
+<span class="sd">        :return: Flow object, Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_step</span><span class="p">(</span><span class="n">step</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_step_created_event</span><span class="p">(</span><span class="n">step</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">generate_date_time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">get_created_by</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully created step [</span><span class="si">%s</span><span class="s2">] in flow [</span><span class="si">%s</span><span class="s2">] with application [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span>
+                         <span class="n">step</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">,</span> <span class="n">step</span></div>
+
+<div class="viewcode-block" id="Flow.update_step"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.update_step">[docs]</a>    <span class="k">def</span> <span class="nf">update_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="n">Step</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes step and update step in the flow</span>
+
+<span class="sd">        :param step: Step object</span>
+<span class="sd">        :return: Flow object, Step object, Old step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">old_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_step</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+        <span class="n">old_step_name</span> <span class="o">=</span> <span class="n">old_step</span><span class="o">.</span><span class="n">get_widget</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span>
+        <span class="n">updated_step</span> <span class="o">=</span> <span class="n">old_step</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">updated_step</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">generate_date_time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">get_updated_by</span><span class="p">()</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully updated step [</span><span class="si">%s</span><span class="s2">] in flow [</span><span class="si">%s</span><span class="s2">] with application [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span>
+                     <span class="n">step</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">,</span> <span class="n">updated_step</span><span class="p">,</span> <span class="n">old_step_name</span></div>
+
+<div class="viewcode-block" id="Flow.delete_step"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.delete_step">[docs]</a>    <span class="k">def</span> <span class="nf">delete_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes step_id and delete step</span>
+<span class="sd">        in the flow</span>
+
+<span class="sd">        :param step_id: str object</span>
+<span class="sd">        :return: Flow object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_step</span><span class="p">(</span><span class="n">step_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">step</span><span class="o">.</span><span class="n">is_removed</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_remove_step_connections</span><span class="p">(</span><span class="n">step_id</span><span class="p">)</span>
+            <span class="n">step</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">generate_date_time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_step_removed_event</span><span class="p">(</span><span class="n">step</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully deleted step [</span><span class="si">%s</span><span class="s2">] in flow [</span><span class="si">%s</span><span class="s2">] with application [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">step_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.add_step_connection"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.add_step_connection">[docs]</a>    <span class="k">def</span> <span class="nf">add_step_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">connection_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes step_id, connection_id and adds</span>
+<span class="sd">        step connection</span>
+
+<span class="sd">        :param step_id: str object</span>
+<span class="sd">        :param connection_id: str object</span>
+<span class="sd">        :return: Flow object, Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">updated_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_step</span><span class="p">(</span><span class="n">step_id</span><span class="p">)</span><span class="o">.</span><span class="n">add_connection</span><span class="p">(</span><span class="n">connection_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">updated_step</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="n">updated_step</span><span class="o">.</span><span class="n">get_events</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">generate_date_time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully added step [</span><span class="si">%s</span><span class="s2">] connection [</span><span class="si">%s</span><span class="s2">] in flow [</span><span class="si">%s</span><span class="s2">] with application [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span>
+                         <span class="n">step_id</span><span class="p">,</span> <span class="n">connection_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">,</span> <span class="n">updated_step</span></div>
+
+<div class="viewcode-block" id="Flow.remove_step_connection"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.remove_step_connection">[docs]</a>    <span class="k">def</span> <span class="nf">remove_step_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">connection_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes step_id, connection_id and step removes</span>
+<span class="sd">        connection of that step</span>
+
+<span class="sd">        :param step_id: str object</span>
+<span class="sd">        :param connection_id: str object</span>
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">updated_step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_step</span><span class="p">(</span><span class="n">step_id</span><span class="p">)</span><span class="o">.</span><span class="n">remove_connection</span><span class="p">(</span><span class="n">connection_id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">updated_step</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">updated_step</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">generate_date_time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">()</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully added step [</span><span class="si">%s</span><span class="s2">] connection [</span><span class="si">%s</span><span class="s2">] in flow [</span><span class="si">%s</span><span class="s2">] with application [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span>
+                         <span class="n">step_id</span><span class="p">,</span> <span class="n">connection_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">,</span> <span class="n">updated_step</span></div>
+
+<div class="viewcode-block" id="Flow.merge"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.merge">[docs]</a>    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets update fields for the Flow and returns Flow object</span>
+
+<span class="sd">        :param flow: Flow object</span>
+<span class="sd">        :return: Flow object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_name</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span><span class="o">.</span><span class="n">_set_description</span><span class="p">(</span><span class="n">flow</span><span class="o">.</span><span class="n">get_description</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">get_updated_by</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_flow_updated_event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="o">=</span> <span class="n">generate_date_time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.delete"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates flow disable event</span>
+<span class="sd">        for flow deletion</span>
+
+<span class="sd">        :return: boolean object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Deleting flow [</span><span class="si">%s</span><span class="s2">] for application [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="o">=</span> <span class="n">generate_date_time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_flow_disabled_event</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully deleted flow [</span><span class="si">%s</span><span class="s2">] for application [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Flow.recover"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.recover">[docs]</a>    <span class="k">def</span> <span class="nf">recover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates flow recovered event</span>
+<span class="sd">        for flow recovery</span>
+
+<span class="sd">        :return: boolean object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Recovering flow [</span><span class="si">%s</span><span class="s2">] for application [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_flow_restored_event</span><span class="p">())</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully recovered flow [</span><span class="si">%s</span><span class="s2">] for application [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Flow.serialized_info"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.serialized_info">[docs]</a>    <span class="k">def</span> <span class="nf">serialized_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">include_disabled_step</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes include_disabled_step and returns</span>
+<span class="sd">        serialized flow information</span>
+
+<span class="sd">        :param include_disabled_step: bool object</span>
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">flow</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_info</span><span class="p">()</span>
+        <span class="n">steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_active_steps</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">include_disabled_step</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span>
+        <span class="n">flow</span><span class="p">[</span><span class="s1">&#39;steps&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">step</span><span class="o">.</span><span class="n">serialized_info</span><span class="p">()</span> <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="n">steps</span><span class="p">]</span> <span class="k">if</span> <span class="n">steps</span> <span class="k">else</span> <span class="n">steps</span>
+        <span class="n">flow</span><span class="p">[</span><span class="s1">&#39;created_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime_conversion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">created_at</span><span class="p">)</span>
+        <span class="n">flow</span><span class="p">[</span><span class="s1">&#39;updated_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime_conversion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">updated_at</span>
+        <span class="n">flow</span><span class="p">[</span><span class="s1">&#39;deleted_at&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime_conversion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span>
+        <span class="k">return</span> <span class="n">flow</span></div>
+
+    <span class="k">def</span> <span class="nf">_get_active_steps</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns active steps from the flow</span>
+
+<span class="sd">        :return: list object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">active_steps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">step</span><span class="o">.</span><span class="n">is_removed</span><span class="p">():</span>
+                <span class="n">active_steps</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully removed disabled step from the flow [</span><span class="si">%s</span><span class="s2">] for application [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">active_steps</span>
+
+    <span class="k">def</span> <span class="nf">_get_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes step_id and returns step</span>
+
+<span class="sd">        :param step_id: string object</span>
+<span class="sd">        :return: Step object or raise StepNotFoundException</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">step</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span> <span class="o">==</span> <span class="n">step_id</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">step</span>
+        <span class="k">raise</span> <span class="n">StepNotFoundException</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Step </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> does not exist&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_has_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="n">Step</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Checks if the step is already within the steps list</span>
+
+<span class="sd">        :param step: Step object</span>
+<span class="sd">        :return: bool object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">step_exists</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_steps</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span> <span class="o">==</span> <span class="n">step</span><span class="o">.</span><span class="n">get_id</span><span class="p">():</span>
+                <span class="n">step_exists</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">break</span>
+        <span class="k">return</span> <span class="n">step_exists</span>
+
+    <span class="k">def</span> <span class="nf">_remove_step_connections</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes step_id and removes</span>
+<span class="sd">        connections of that step</span>
+
+<span class="sd">        :param step_id: str object</span>
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">step_id</span> <span class="ow">in</span> <span class="n">step</span><span class="o">.</span><span class="n">get_connections</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">events</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">remove_connection</span><span class="p">(</span><span class="n">step_id</span><span class="p">)</span><span class="o">.</span><span class="n">get_events</span><span class="p">())</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully deleted step [</span><span class="si">%s</span><span class="s2">] connections in flow [</span><span class="si">%s</span><span class="s2">] with application [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span>
+                     <span class="n">step_id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes new flow name, compares with old one then sets and generates</span>
+<span class="sd">        FlowNameUpdated event and append it to event list and</span>
+<span class="sd">        finally returns Flow object</span>
+
+<span class="sd">        :param new_name: str object</span>
+<span class="sd">        :return: Flow object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Changing flow name&quot;</span><span class="p">)</span>
+        <span class="n">old_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
+        <span class="k">if</span> <span class="n">new_name</span> <span class="ow">and</span> <span class="p">(</span><span class="n">new_name</span> <span class="o">!=</span> <span class="n">old_name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">new_name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_field_updated_event</span><span class="p">(</span>
+                <span class="n">FlowUpdatedEvents</span><span class="p">(</span><span class="s1">&#39;flow_name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">event_class</span><span class="p">,</span> <span class="n">old_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">()))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Flow name [</span><span class="si">%s</span><span class="s2">] is successfully updated with [</span><span class="si">%s</span><span class="s2">] for Flow [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">old_name</span><span class="p">,</span>
+                         <span class="n">new_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Skipping Flow name change. No change&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_set_description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_description</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes new flow description, compares with old one then sets and generates</span>
+<span class="sd">        FlowDescriptionUpdated event and append it to event list and</span>
+<span class="sd">        finally returns Flow object</span>
+
+<span class="sd">        :param new_description: str object</span>
+<span class="sd">        :return: Flow object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Changing flow description&quot;</span><span class="p">)</span>
+        <span class="n">old_description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_description</span>
+        <span class="k">if</span> <span class="n">new_description</span> <span class="ow">and</span> <span class="p">(</span><span class="n">new_description</span> <span class="o">!=</span> <span class="n">old_description</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">new_description</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_field_updated_event</span><span class="p">(</span>
+                <span class="n">FlowUpdatedEvents</span><span class="p">(</span><span class="s1">&#39;flow_description&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">event_class</span><span class="p">,</span> <span class="n">old_description</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_description</span><span class="p">()))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Flow description [</span><span class="si">%s</span><span class="s2">] is successfully updated with [</span><span class="si">%s</span><span class="s2">] for Flow [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">old_description</span><span class="p">,</span>
+                         <span class="n">new_description</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Skipping Flow description change. No change&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_generate_flow_disabled_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates event for flow deletion</span>
+
+<span class="sd">        :return: FlowDisabled Event object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">FlowDisabled</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">triggered_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">application_</span><span class="p">(</span>
+            <span class="n">RakizoApplication</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span><span class="o">.</span><span class="n">application_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span><span class="o">.</span><span class="n">application_version</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span><span class="o">.</span><span class="n">company_id</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_company_id</span><span class="p">())</span><span class="o">.</span><span class="n">flow_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">())</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span><span class="o">.</span><span class="n">flow_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_version</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate_flow_created_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates event for flow creation</span>
+
+<span class="sd">        :return: FlowCreated Event object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">FlowCreated</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">triggered_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">application_</span><span class="p">(</span>
+            <span class="n">RakizoApplication</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span><span class="o">.</span><span class="n">application_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span><span class="o">.</span><span class="n">application_version</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span><span class="o">.</span><span class="n">company_id</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_company_id</span><span class="p">())</span><span class="o">.</span><span class="n">flow_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">())</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span><span class="o">.</span><span class="n">flow_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_version</span><span class="p">)</span><span class="o">.</span><span class="n">description</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">)</span><span class="o">.</span><span class="n">created_by</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">created_by</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate_field_updated_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_class</span><span class="p">,</span> <span class="n">old_value</span><span class="p">,</span> <span class="n">new_value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes event class, old value, new value, generates and returns flow Updated Events</span>
+
+<span class="sd">        :param event_class: Event class</span>
+<span class="sd">        :param old_value: Any object</span>
+<span class="sd">        :param new_value: Any object</span>
+<span class="sd">        :return: Event object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">event_class</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">triggered_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span><span class="o">.</span><span class="n">flow_version</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_version</span><span class="p">)</span><span class="o">.</span><span class="n">description</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">)</span><span class="o">.</span><span class="n">updated_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">old_value</span><span class="p">(</span>
+            <span class="n">old_value</span><span class="p">)</span><span class="o">.</span><span class="n">new_value</span><span class="p">(</span><span class="n">new_value</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate_flow_updated_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates event for flow update</span>
+
+<span class="sd">        :return: FlowInfoUpdated Event object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">updated_info</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_events</span><span class="p">():</span>
+            <span class="n">updated_info</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">event</span><span class="o">.</span><span class="n">get_change</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">updated_info</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_event</span><span class="p">(</span><span class="n">FlowInfoUpdated</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">triggered_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">name</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span><span class="o">.</span><span class="n">flow_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_version</span><span class="p">)</span><span class="o">.</span><span class="n">description</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_description</span><span class="p">)</span><span class="o">.</span><span class="n">updated_by</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">updated_by</span><span class="p">)</span><span class="o">.</span><span class="n">change_info</span><span class="p">(</span><span class="n">updated_info</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">_generate_step_created_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="n">Step</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes step and generates event for flow step creation</span>
+
+<span class="sd">        :param step: Step object</span>
+<span class="sd">        :return: stepCreated Event object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">StepCreated</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span><span class="o">.</span><span class="n">triggered_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">application_</span><span class="p">(</span>
+            <span class="n">RakizoApplication</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span><span class="o">.</span><span class="n">application_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span><span class="o">.</span><span class="n">application_version</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span><span class="o">.</span><span class="n">company_id</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_company_id</span><span class="p">())</span><span class="o">.</span><span class="n">flow_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">())</span><span class="o">.</span><span class="n">widget_id</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span><span class="o">.</span><span class="n">widget_name</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">get_widget</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span><span class="o">.</span><span class="n">widget_type</span><span class="p">(</span>
+            <span class="n">step</span><span class="o">.</span><span class="n">get_widget</span><span class="p">()</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span><span class="o">.</span><span class="n">created_by</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">get_created_by</span><span class="p">())</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate_step_removed_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="n">Step</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes step and generates event for flow step remove</span>
+
+<span class="sd">        :param step: Step object</span>
+<span class="sd">        :return: StepRemoved Event object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">StepRemoved</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span><span class="o">.</span><span class="n">triggered_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">application_</span><span class="p">(</span>
+            <span class="n">RakizoApplication</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span><span class="o">.</span><span class="n">application_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span><span class="o">.</span><span class="n">application_version</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span><span class="o">.</span><span class="n">company_id</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_company_id</span><span class="p">())</span><span class="o">.</span><span class="n">flow_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">())</span><span class="o">.</span><span class="n">widget_id</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span><span class="o">.</span><span class="n">widget_name</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">get_widget</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">())</span><span class="o">.</span><span class="n">widget_type</span><span class="p">(</span>
+            <span class="n">step</span><span class="o">.</span><span class="n">get_widget</span><span class="p">()</span><span class="o">.</span><span class="n">get_type</span><span class="p">())</span><span class="o">.</span><span class="n">updated_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_generate_flow_restored_event</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Generates event for flow recovery</span>
+
+<span class="sd">        :return: FlowRestored Event object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">FlowRestored</span><span class="o">.</span><span class="n">Builder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">triggered_by</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">application_</span><span class="p">(</span>
+            <span class="n">RakizoApplication</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span><span class="o">.</span><span class="n">application_id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span><span class="o">.</span><span class="n">application_version</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_application</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;version&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span><span class="o">.</span><span class="n">company_id</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_company_id</span><span class="p">())</span><span class="o">.</span><span class="n">flow_id</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">())</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_name</span><span class="p">)</span><span class="o">.</span><span class="n">flow_version</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_version</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Flow.Builder"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder">[docs]</a>    <span class="k">class</span> <span class="nc">Builder</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builder class for Flow</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Initialization method for Builder class</span>
+<span class="sd">            which resets builder properties</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reset</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Flow.Builder.id"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.id">[docs]</a>        <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes id and sets property in builder</span>
+
+<span class="sd">            :param id: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.Builder.name"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.name">[docs]</a>        <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow_name</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes flow_name and sets property in builder</span>
+
+<span class="sd">            :param flow_name: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">flow_name</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.Builder.version"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.version">[docs]</a>        <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow_version</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes flow_version and sets property in builder</span>
+
+<span class="sd">            :param flow_version: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_version</span> <span class="o">=</span> <span class="n">flow_version</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.Builder.description"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.description">[docs]</a>        <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow_description</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes flow_description and sets property in builder</span>
+
+<span class="sd">            :param flow_description: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="n">flow_description</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.Builder.application"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.application">[docs]</a>        <span class="k">def</span> <span class="nf">application</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes application and sets property in builder</span>
+
+<span class="sd">            :param application: dict object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_application</span> <span class="o">=</span> <span class="n">application</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.Builder.steps"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.steps">[docs]</a>        <span class="k">def</span> <span class="nf">steps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">steps</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes steps and sets property in builder</span>
+
+<span class="sd">            :param steps: list object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span> <span class="o">=</span> <span class="n">steps</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.Builder.created_by"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.created_by">[docs]</a>        <span class="k">def</span> <span class="nf">created_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow_created_by</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes flow_created_by and sets property in builder</span>
+
+<span class="sd">            :param flow_created_by: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_created_by</span> <span class="o">=</span> <span class="n">flow_created_by</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.Builder.updated_by"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.updated_by">[docs]</a>        <span class="k">def</span> <span class="nf">updated_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_id</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes user_id and sets property in builder</span>
+
+<span class="sd">            :param user_id: string object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_updated_by</span> <span class="o">=</span> <span class="n">user_id</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.Builder.created_at"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.created_at">[docs]</a>        <span class="k">def</span> <span class="nf">created_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes flow creation date and sets property in builder</span>
+
+<span class="sd">            :param date: datetime object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_created_at</span> <span class="o">=</span> <span class="n">date</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.Builder.updated_at"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.updated_at">[docs]</a>        <span class="k">def</span> <span class="nf">updated_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes flow update date and sets property in builder</span>
+
+<span class="sd">            :param date: datetime object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_updated_at</span> <span class="o">=</span> <span class="n">date</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+<div class="viewcode-block" id="Flow.Builder.deleted_at"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.deleted_at">[docs]</a>        <span class="k">def</span> <span class="nf">deleted_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Takes deleted_at and sets property in builder</span>
+
+<span class="sd">            :param date: datetime object</span>
+<span class="sd">            :return: Builder object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="o">=</span> <span class="n">date</span>
+            <span class="k">return</span> <span class="bp">self</span></div>
+
+        <span class="k">def</span> <span class="nf">_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Resets builder properties before constructing Flow</span>
+
+<span class="sd">            :return: None</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_version</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_description</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_created_by</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_updated_by</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_application</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_created_at</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_updated_at</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_deleted_at</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_steps</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="Flow.Builder.build"><a class="viewcode-back" href="../../flow.aggregates.html#flow.aggregates.Flow.Builder.build">[docs]</a>        <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Returns Flow object built by the builder</span>
+
+<span class="sd">            :return: Flow object</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+            <span class="k">return</span> <span class="n">Flow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, UDPlatforms Inc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

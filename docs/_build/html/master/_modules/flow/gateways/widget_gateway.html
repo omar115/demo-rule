@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>flow.gateways.widget_gateway &mdash; flow  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> flow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../flow.html">flow</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">flow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>flow.gateways.widget_gateway</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for flow.gateways.widget_gateway</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">g</span>
+<span class="kn">from</span> <span class="nn">rakizo.logging_config.logging_config</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+
+<span class="kn">from</span> <span class="nn">flow.aggregates</span> <span class="kn">import</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">Step</span><span class="p">,</span> <span class="n">Widget</span>
+<span class="kn">from</span> <span class="nn">flow.exceptions</span> <span class="kn">import</span> <span class="p">(</span><span class="n">WidgetCreationFailedException</span><span class="p">,</span> <span class="n">WidgetNameUpdateFailedException</span><span class="p">,</span>
+                             <span class="n">WidgetDeletionFailedException</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">flow.gateways.commons</span> <span class="kn">import</span> <span class="n">get_headers</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="WidgetGateway"><a class="viewcode-back" href="../../../flow.gateways.widget_gateway.html#flow.gateways.widget_gateway.WidgetGateway">[docs]</a><span class="k">class</span> <span class="nc">WidgetGateway</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Widget gateway class used to hit</span>
+<span class="sd">    Widget service endpoint.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_urls</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for widget gateway object.</span>
+
+<span class="sd">        :param service_urls: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_urls</span> <span class="o">=</span> <span class="n">service_urls</span>
+
+<div class="viewcode-block" id="WidgetGateway.create"><a class="viewcode-back" href="../../../flow.gateways.widget_gateway.html#flow.gateways.widget_gateway.WidgetGateway.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">flow</span><span class="p">:</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">widget</span><span class="p">:</span> <span class="n">Widget</span><span class="p">,</span> <span class="n">step_position</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">step_size</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes token, flow, widget, step_position, step_size</span>
+<span class="sd">        and creates widget through widget api then returns</span>
+<span class="sd">        created Step object</span>
+
+<span class="sd">        :param token: bytes object</span>
+<span class="sd">        :param flow: Flow object</span>
+<span class="sd">        :param widget: Widget object</span>
+<span class="sd">        :param step_position: dict object</span>
+<span class="sd">        :param step_size: dict object</span>
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">widget_type</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Requesting to URL [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_urls</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">widget</span><span class="o">.</span><span class="n">get_type</span><span class="p">()))</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">service_urls</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">widget_type</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">(</span><span class="n">token</span><span class="p">),</span>
+                                 <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_data</span><span class="p">(</span><span class="n">flow</span><span class="p">,</span> <span class="n">widget</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">201</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] creation failed for flow [</span><span class="si">%s</span><span class="s2">] with status [</span><span class="si">%s</span><span class="s2">] due to [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">widget_type</span><span class="p">,</span> <span class="n">flow</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span>
+                      <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">WidgetCreationFailedException</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="n">response_json</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully created widget [</span><span class="si">%s</span><span class="s2">] type [</span><span class="si">%s</span><span class="s2">] for flow [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">widget_type</span><span class="p">,</span> <span class="n">response_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
+                  <span class="n">flow</span><span class="o">.</span><span class="n">get_id</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_step</span><span class="p">(</span><span class="n">response_json</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span> <span class="n">response_json</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">response_json</span><span class="p">[</span><span class="s1">&#39;version&#39;</span><span class="p">],</span>
+                                 <span class="n">widget</span><span class="o">.</span><span class="n">get_type</span><span class="p">(),</span> <span class="n">step_position</span><span class="p">,</span> <span class="n">step_size</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WidgetGateway.update_name"><a class="viewcode-back" href="../../../flow.gateways.widget_gateway.html#flow.gateways.widget_gateway.WidgetGateway.update_name">[docs]</a>    <span class="k">def</span> <span class="nf">update_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">flow_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">step</span><span class="p">:</span> <span class="n">Step</span><span class="p">,</span> <span class="n">application_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes token, flow_id, step, application_info and renames</span>
+<span class="sd">        widget through widget api then returns</span>
+<span class="sd">        updated Step object</span>
+
+<span class="sd">        :param token: bytes object</span>
+<span class="sd">        :param flow_id: str object</span>
+<span class="sd">        :param step: Step object</span>
+<span class="sd">        :param application_info: dict object</span>
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">widget_type</span> <span class="o">=</span> <span class="n">step</span><span class="o">.</span><span class="n">get_widget</span><span class="p">()</span><span class="o">.</span><span class="n">get_type</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Requesting to URL [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_urls</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">widget_type</span><span class="p">))</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">patch</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">service_urls</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">widget_type</span><span class="p">),</span> <span class="n">step</span><span class="o">.</span><span class="n">get_id</span><span class="p">()),</span>
+                                  <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">(</span><span class="n">token</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">step</span><span class="o">.</span><span class="n">get_widget</span><span class="p">()</span><span class="o">.</span><span class="n">get_name</span><span class="p">(),</span> <span class="s2">&quot;application&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_application_data</span><span class="p">(</span><span class="n">application_info</span><span class="p">)}))</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] name update failed for flow [</span><span class="si">%s</span><span class="s2">] with status [</span><span class="si">%s</span><span class="s2">] due to [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">widget_type</span><span class="p">,</span> <span class="n">flow_id</span><span class="p">,</span>
+                      <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">WidgetNameUpdateFailedException</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully updated widget [</span><span class="si">%s</span><span class="s2">] name for flow [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span>
+                  <span class="n">step</span><span class="o">.</span><span class="n">get_id</span><span class="p">(),</span> <span class="n">flow_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="WidgetGateway.delete"><a class="viewcode-back" href="../../../flow.gateways.widget_gateway.html#flow.gateways.widget_gateway.WidgetGateway.delete">[docs]</a>    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">flow_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">step_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">widget_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes token, flow_id, step_id, widget_type</span>
+<span class="sd">        and deletes widget through widget api then returns</span>
+<span class="sd">        response json object</span>
+
+<span class="sd">        :param token: bytes object</span>
+<span class="sd">        :param flow_id: str object</span>
+<span class="sd">        :param step_id: str object</span>
+<span class="sd">        :param widget_type: str object</span>
+<span class="sd">        :return: response object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Requesting to URL [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">service_urls</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">widget_type</span><span class="p">))</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">service_urls</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">widget_type</span><span class="p">),</span> <span class="n">step_id</span><span class="p">),</span>
+                                   <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">(</span><span class="n">token</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">] deletion failed for flow [</span><span class="si">%s</span><span class="s2">] with status [</span><span class="si">%s</span><span class="s2">] due to [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">widget_type</span><span class="p">,</span> <span class="n">flow_id</span><span class="p">,</span>
+                      <span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">response</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">WidgetDeletionFailedException</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Successfully deleted widget [</span><span class="si">%s</span><span class="s2">] type [</span><span class="si">%s</span><span class="s2">] for flow [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">widget_type</span><span class="p">,</span> <span class="n">step_id</span><span class="p">,</span> <span class="n">flow_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_create_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">widget_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">widget_version</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">widget_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">step_position</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                     <span class="n">step_size</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes widget_id, widget_name, widget_version, widget_type,</span>
+<span class="sd">        step_position and step_size then returns</span>
+<span class="sd">        created Step object</span>
+
+<span class="sd">        :param widget_id: str object</span>
+<span class="sd">        :param widget_name: str object</span>
+<span class="sd">        :param widget_version: str object</span>
+<span class="sd">        :param widget_type: str object</span>
+<span class="sd">        :param step_position: dict object</span>
+<span class="sd">        :param step_size: dict object</span>
+<span class="sd">        :return: Step object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Step</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="n">widget_id</span><span class="p">)</span><span class="o">.</span><span class="n">widget</span><span class="p">(</span><span class="n">Widget</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="n">widget_name</span><span class="p">)</span><span class="o">.</span><span class="n">type</span><span class="p">(</span><span class="n">widget_type</span><span class="p">)</span><span class="o">.</span><span class="n">version</span><span class="p">(</span>
+            <span class="n">widget_version</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">())</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="n">step_position</span><span class="p">)</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="n">step_size</span><span class="p">)</span><span class="o">.</span><span class="n">created_by</span><span class="p">(</span>
+            <span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">())</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_get_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">flow</span><span class="p">:</span> <span class="n">Flow</span><span class="p">,</span> <span class="n">widget</span><span class="p">:</span> <span class="n">Widget</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes flow and widget returns dict data</span>
+
+<span class="sd">        :param flow: Flow object</span>
+<span class="sd">        :param widget: Widget object</span>
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">flow_id</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">get_id</span><span class="p">()</span>
+        <span class="n">application_info</span> <span class="o">=</span> <span class="n">flow</span><span class="o">.</span><span class="n">get_application</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()}</span> <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="k">else</span> <span class="p">{}),</span>
+                <span class="o">**</span><span class="p">({</span><span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_version</span><span class="p">()}</span> <span class="k">if</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_version</span><span class="p">()</span> <span class="k">else</span> <span class="p">{}),</span> <span class="s2">&quot;flowId&quot;</span><span class="p">:</span> <span class="n">flow_id</span><span class="p">,</span>
+                <span class="s2">&quot;application&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_application_data</span><span class="p">(</span><span class="n">application_info</span><span class="p">)}</span>
+
+    <span class="k">def</span> <span class="nf">_get_application_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">application_info</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes application_info and</span>
+<span class="sd">        returns serialized application data</span>
+
+<span class="sd">        :param application_info: dict object</span>
+<span class="sd">        :return: dict object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">application_info</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span> <span class="s2">&quot;version&quot;</span><span class="p">:</span> <span class="n">application_info</span><span class="p">[</span><span class="s2">&quot;version&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;companyId&quot;</span><span class="p">:</span> <span class="n">application_info</span><span class="p">[</span><span class="s2">&quot;company_id&quot;</span><span class="p">]}</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, UDPlatforms Inc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+gateways
+========
+
+
+.. include:: ../../gateways/README.md
+
+.. uml:: ../../docs/plantuml/gateways.puml
+
+.. uml:: ../../docs/plantuml/gateways/create_flow.puml
+.. uml:: ../../docs/plantuml/gateways/get_flow.puml
+.. uml:: ../../docs/plantuml/gateways/get_flow_list.puml
+.. uml:: ../../docs/plantuml/gateways/update_flow.puml
+.. uml:: ../../docs/plantuml/gateways/create_flow_step.puml
+.. uml:: ../../docs/plantuml/gateways/update_flow_step.puml
+.. uml:: ../../docs/plantuml/gateways/delete_flow_step.puml
+.. uml:: ../../docs/plantuml/gateways/add_flow_step_connection.puml
+.. uml:: ../../docs/plantuml/gateways/delete_flow_step_connection.puml
+.. uml:: ../../docs/plantuml/gateways/delete_screen.puml
+.. uml:: ../../docs/plantuml/gateways/recover_flow.puml
+
+.. toctree::
+   :maxdepth: 4
+
+   flow.gateways.commons
+   flow.gateways.widget_gateway

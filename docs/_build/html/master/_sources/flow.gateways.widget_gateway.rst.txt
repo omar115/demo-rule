@@ -1,0 +1,7 @@
+widget\_gateway
+===============
+
+.. automodule:: flow.gateways.widget_gateway
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>events &mdash; flow  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="exceptions" href="flow.exceptions.html" />
+    <link rel="prev" title="containers" href="flow.containers.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> flow
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="flow.html">flow</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="flow.gateways.html">gateways</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.aggregates.html">aggregates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.api.html">api</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.constants.html">constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.containers.html">containers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.exceptions.html">exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.repositories.html">repositories</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.schemas.html">schemas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow.services.html">services</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">flow</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="flow.html">flow</a> &raquo;</li>
+      <li>events</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/flow.events.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-flow.events">
+<span id="events"></span><h1>events<a class="headerlink" href="#module-flow.events" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">BaseFlowEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rakizo.event_essentials.events.Event</span></code></p>
+<p>BaseFlowEvent Event class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trigger</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">rakizo.event_essentials.events.Event.Builder</span></code></p>
+<p>Builder class for BaseFlowEvent</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent.Builder.created_by">
+<span class="sig-name descname"><span class="pre">created_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow_created_by</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent.Builder.created_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent.Builder.created_by" title="Permalink to this definition"></a></dt>
+<dd><p>Takes flow_created_by and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flow_created_by</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent.Builder.description">
+<span class="sig-name descname"><span class="pre">description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow_description</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent.Builder.description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent.Builder.description" title="Permalink to this definition"></a></dt>
+<dd><p>Takes flow_description and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flow_description</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent.Builder.flow_version">
+<span class="sig-name descname"><span class="pre">flow_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow_version</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent.Builder.flow_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent.Builder.flow_version" title="Permalink to this definition"></a></dt>
+<dd><p>Takes flow_version and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flow_version</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent.Builder.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">flow_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent.Builder.name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent.Builder.name" title="Permalink to this definition"></a></dt>
+<dd><p>Takes flow_name and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>flow_name</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent.Builder.step_connection">
+<span class="sig-name descname"><span class="pre">step_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_connection</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent.Builder.step_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent.Builder.step_connection" title="Permalink to this definition"></a></dt>
+<dd><p>Takes step connection and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>step_connection</strong> – list object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent.Builder.updated_by">
+<span class="sig-name descname"><span class="pre">updated_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent.Builder.updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent.Builder.updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Takes user_id and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>user_id</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent.Builder.widget_id">
+<span class="sig-name descname"><span class="pre">widget_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent.Builder.widget_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent.Builder.widget_id" title="Permalink to this definition"></a></dt>
+<dd><p>Takes widget_id and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>widget_id</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent.Builder.widget_name">
+<span class="sig-name descname"><span class="pre">widget_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent.Builder.widget_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent.Builder.widget_name" title="Permalink to this definition"></a></dt>
+<dd><p>Takes widget_name and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>widget_name</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent.Builder.widget_type">
+<span class="sig-name descname"><span class="pre">widget_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">widget_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent.Builder.widget_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent.Builder.widget_type" title="Permalink to this definition"></a></dt>
+<dd><p>Takes widget_type and sets property in builder</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>widget_type</strong> – string object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder objects</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowEvent.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowEvent.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowEvent.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metrics
+:return: List[Metric]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.BaseFlowFieldUpdate">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">BaseFlowFieldUpdate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowFieldUpdate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowFieldUpdate" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent" title="flow.events.BaseFlowEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent</span></code></a></p>
+<p>BaseFlowFieldUpdate Event class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.BaseFlowFieldUpdate.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowFieldUpdate.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowFieldUpdate.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent.Builder" title="flow.events.BaseFlowEvent.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent.Builder</span></code></a></p>
+<p>Builder class for BaseFlowFieldUpdate Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowFieldUpdate.Builder.new_value">
+<span class="sig-name descname"><span class="pre">new_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowFieldUpdate.Builder.new_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowFieldUpdate.Builder.new_value" title="Permalink to this definition"></a></dt>
+<dd><p>Takes value and set it as newValue and returns Builder object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – str or dict object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowFieldUpdate.Builder.old_value">
+<span class="sig-name descname"><span class="pre">old_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowFieldUpdate.Builder.old_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowFieldUpdate.Builder.old_value" title="Permalink to this definition"></a></dt>
+<dd><p>Takes value and set is as oldValue and returns Builder object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>value</strong> – str or dict object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.BaseFlowUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">BaseFlowUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowUpdated" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent" title="flow.events.BaseFlowEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent</span></code></a></p>
+<p>BaseFlowUpdated Event class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.BaseFlowUpdated.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowUpdated.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowUpdated.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent.Builder" title="flow.events.BaseFlowEvent.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent.Builder</span></code></a></p>
+<p>Builder class for BaseFlowUpdated Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.BaseFlowUpdated.Builder.change_info">
+<span class="sig-name descname"><span class="pre">change_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#BaseFlowUpdated.Builder.change_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.BaseFlowUpdated.Builder.change_info" title="Permalink to this definition"></a></dt>
+<dd><p>Takes updated info and returns Builder object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>values</strong> – dict object</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Builder object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowCreated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">FlowCreated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowCreated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowCreated" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent" title="flow.events.BaseFlowEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent</span></code></a></p>
+<p>FlowCreated Event class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowCreated.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowCreated.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowCreated.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent.Builder" title="flow.events.BaseFlowEvent.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent.Builder</span></code></a></p>
+<p>Builder class for FlowCreated Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowCreated.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowCreated.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowCreated.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns FlowCreated object built by the builder
+:return: FlowCreated object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowCreated.get_created_by">
+<span class="sig-name descname"><span class="pre">get_created_by</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowCreated.get_created_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowCreated.get_created_by" title="Permalink to this definition"></a></dt>
+<dd><p>Returns created by of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowCreated.get_description">
+<span class="sig-name descname"><span class="pre">get_description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowCreated.get_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowCreated.get_description" title="Permalink to this definition"></a></dt>
+<dd><p>Returns description of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowCreated.get_flow_version">
+<span class="sig-name descname"><span class="pre">get_flow_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowCreated.get_flow_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowCreated.get_flow_version" title="Permalink to this definition"></a></dt>
+<dd><p>Returns version of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowCreated.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowCreated.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowCreated.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowCreated.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowCreated.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowCreated.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns name of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowDescriptionUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">FlowDescriptionUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDescriptionUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDescriptionUpdated" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowFieldUpdate" title="flow.events.BaseFlowFieldUpdate"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowFieldUpdate</span></code></a></p>
+<p>FlowDescriptionUpdated Event Class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowDescriptionUpdated.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDescriptionUpdated.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDescriptionUpdated.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowFieldUpdate.Builder" title="flow.events.BaseFlowFieldUpdate.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowFieldUpdate.Builder</span></code></a></p>
+<p>Builder class for FlowDescriptionUpdated Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDescriptionUpdated.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDescriptionUpdated.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDescriptionUpdated.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns FlowDescriptionUpdated object built by the builder
+:return: FlowDescriptionUpdated object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDescriptionUpdated.get_change">
+<span class="sig-name descname"><span class="pre">get_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDescriptionUpdated.get_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDescriptionUpdated.get_change" title="Permalink to this definition"></a></dt>
+<dd><p>Returns new value and old value of the flow name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDescriptionUpdated.get_flow_version">
+<span class="sig-name descname"><span class="pre">get_flow_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDescriptionUpdated.get_flow_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDescriptionUpdated.get_flow_version" title="Permalink to this definition"></a></dt>
+<dd><p>Returns version of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDescriptionUpdated.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDescriptionUpdated.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDescriptionUpdated.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDescriptionUpdated.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDescriptionUpdated.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDescriptionUpdated.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns name of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDescriptionUpdated.get_new_description">
+<span class="sig-name descname"><span class="pre">get_new_description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDescriptionUpdated.get_new_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDescriptionUpdated.get_new_description" title="Permalink to this definition"></a></dt>
+<dd><p>Returns new value of the flow description</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDescriptionUpdated.get_old_description">
+<span class="sig-name descname"><span class="pre">get_old_description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDescriptionUpdated.get_old_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDescriptionUpdated.get_old_description" title="Permalink to this definition"></a></dt>
+<dd><p>Returns old value of the flow description</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDescriptionUpdated.get_updated_by">
+<span class="sig-name descname"><span class="pre">get_updated_by</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDescriptionUpdated.get_updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDescriptionUpdated.get_updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Returns updated by of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowDisabled">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">FlowDisabled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDisabled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDisabled" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent" title="flow.events.BaseFlowEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent</span></code></a></p>
+<p>FlowDisabled Event class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowDisabled.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDisabled.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDisabled.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent.Builder" title="flow.events.BaseFlowEvent.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent.Builder</span></code></a></p>
+<p>Builder class for FlowDisabled Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDisabled.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDisabled.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDisabled.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns FlowDisabled object built by the builder
+:return: FlowDisabled object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDisabled.get_flow_version">
+<span class="sig-name descname"><span class="pre">get_flow_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDisabled.get_flow_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDisabled.get_flow_version" title="Permalink to this definition"></a></dt>
+<dd><p>Returns version of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDisabled.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDisabled.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDisabled.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowDisabled.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowDisabled.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowDisabled.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns name of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowInfoUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">FlowInfoUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowInfoUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowInfoUpdated" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowUpdated" title="flow.events.BaseFlowUpdated"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowUpdated</span></code></a></p>
+<p>FlowInfoUpdated Event Class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowInfoUpdated.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowInfoUpdated.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowInfoUpdated.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowUpdated.Builder" title="flow.events.BaseFlowUpdated.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowUpdated.Builder</span></code></a></p>
+<p>Builder class for FlowInfoUpdated Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowInfoUpdated.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowInfoUpdated.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowInfoUpdated.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns FlowInfoUpdated object built by the builder
+:return: FlowInfoUpdated object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowInfoUpdated.get_change_info">
+<span class="sig-name descname"><span class="pre">get_change_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowInfoUpdated.get_change_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowInfoUpdated.get_change_info" title="Permalink to this definition"></a></dt>
+<dd><p>Returns updated info of flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowInfoUpdated.get_description">
+<span class="sig-name descname"><span class="pre">get_description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowInfoUpdated.get_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowInfoUpdated.get_description" title="Permalink to this definition"></a></dt>
+<dd><p>Returns description of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowInfoUpdated.get_flow_version">
+<span class="sig-name descname"><span class="pre">get_flow_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowInfoUpdated.get_flow_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowInfoUpdated.get_flow_version" title="Permalink to this definition"></a></dt>
+<dd><p>Returns version of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowInfoUpdated.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowInfoUpdated.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowInfoUpdated.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowInfoUpdated.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowInfoUpdated.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowInfoUpdated.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns name of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowInfoUpdated.get_updated_by">
+<span class="sig-name descname"><span class="pre">get_updated_by</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowInfoUpdated.get_updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowInfoUpdated.get_updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Returns created by of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowNameUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">FlowNameUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowNameUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowNameUpdated" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowFieldUpdate" title="flow.events.BaseFlowFieldUpdate"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowFieldUpdate</span></code></a></p>
+<p>FlowNameUpdated Event Class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowNameUpdated.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowNameUpdated.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowNameUpdated.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowFieldUpdate.Builder" title="flow.events.BaseFlowFieldUpdate.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowFieldUpdate.Builder</span></code></a></p>
+<p>Builder class for FlowNameUpdated Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowNameUpdated.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowNameUpdated.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowNameUpdated.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns FlowNameUpdated object built by the builder
+:return: FlowNameUpdated object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowNameUpdated.get_change">
+<span class="sig-name descname"><span class="pre">get_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowNameUpdated.get_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowNameUpdated.get_change" title="Permalink to this definition"></a></dt>
+<dd><p>Returns new value and old value of the flow name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowNameUpdated.get_description">
+<span class="sig-name descname"><span class="pre">get_description</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowNameUpdated.get_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowNameUpdated.get_description" title="Permalink to this definition"></a></dt>
+<dd><p>Returns description of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowNameUpdated.get_flow_version">
+<span class="sig-name descname"><span class="pre">get_flow_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowNameUpdated.get_flow_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowNameUpdated.get_flow_version" title="Permalink to this definition"></a></dt>
+<dd><p>Returns version of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowNameUpdated.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowNameUpdated.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowNameUpdated.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowNameUpdated.get_new_name">
+<span class="sig-name descname"><span class="pre">get_new_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowNameUpdated.get_new_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowNameUpdated.get_new_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns new value of the flow name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowNameUpdated.get_old_name">
+<span class="sig-name descname"><span class="pre">get_old_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowNameUpdated.get_old_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowNameUpdated.get_old_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns old value of the flow name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowNameUpdated.get_updated_by">
+<span class="sig-name descname"><span class="pre">get_updated_by</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowNameUpdated.get_updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowNameUpdated.get_updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Returns updated by of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowRestored">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">FlowRestored</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowRestored"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowRestored" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent" title="flow.events.BaseFlowEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent</span></code></a></p>
+<p>FlowRestored Event class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.FlowRestored.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowRestored.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowRestored.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent.Builder" title="flow.events.BaseFlowEvent.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent.Builder</span></code></a></p>
+<p>Builder class for FlowRestored Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowRestored.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowRestored.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowRestored.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns FlowRestored object built by the builder
+:return: FlowRestored object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowRestored.get_flow_version">
+<span class="sig-name descname"><span class="pre">get_flow_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowRestored.get_flow_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowRestored.get_flow_version" title="Permalink to this definition"></a></dt>
+<dd><p>Returns version of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowRestored.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowRestored.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowRestored.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.FlowRestored.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#FlowRestored.get_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.FlowRestored.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns name of the flow</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepConnected">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">StepConnected</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnected"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnected" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent" title="flow.events.BaseFlowEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent</span></code></a></p>
+<p>StepConnected Event class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepConnected.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnected.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnected.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent.Builder" title="flow.events.BaseFlowEvent.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent.Builder</span></code></a></p>
+<p>Builder class for StepConnected Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepConnected.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnected.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnected.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns StepConnected object built by the builder
+:return: StepConnected object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepConnected.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnected.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnected.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepConnected.get_step_connection">
+<span class="sig-name descname"><span class="pre">get_step_connection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnected.get_step_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnected.get_step_connection" title="Permalink to this definition"></a></dt>
+<dd><p>Returns step connection of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepConnected.get_updated_by">
+<span class="sig-name descname"><span class="pre">get_updated_by</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnected.get_updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnected.get_updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Returns updated by of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepConnected.get_widget_id">
+<span class="sig-name descname"><span class="pre">get_widget_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnected.get_widget_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnected.get_widget_id" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget id of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepConnected.get_widget_type">
+<span class="sig-name descname"><span class="pre">get_widget_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnected.get_widget_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnected.get_widget_type" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget type of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepConnectionRemoved">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">StepConnectionRemoved</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnectionRemoved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnectionRemoved" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent" title="flow.events.BaseFlowEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent</span></code></a></p>
+<p>StepConnectionRemoved Event class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepConnectionRemoved.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnectionRemoved.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnectionRemoved.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent.Builder" title="flow.events.BaseFlowEvent.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent.Builder</span></code></a></p>
+<p>Builder class for StepConnectionRemoved Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepConnectionRemoved.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnectionRemoved.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnectionRemoved.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns StepConnectionRemoved object built by the builder
+:return: StepConnectionRemoved object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepConnectionRemoved.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnectionRemoved.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnectionRemoved.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepConnectionRemoved.get_updated_by">
+<span class="sig-name descname"><span class="pre">get_updated_by</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnectionRemoved.get_updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnectionRemoved.get_updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Returns updated by of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepConnectionRemoved.get_widget_id">
+<span class="sig-name descname"><span class="pre">get_widget_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnectionRemoved.get_widget_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnectionRemoved.get_widget_id" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget id of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepConnectionRemoved.get_widget_type">
+<span class="sig-name descname"><span class="pre">get_widget_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepConnectionRemoved.get_widget_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepConnectionRemoved.get_widget_type" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget type of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepCreated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">StepCreated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepCreated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepCreated" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent" title="flow.events.BaseFlowEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent</span></code></a></p>
+<p>FlowCreated Event class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepCreated.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepCreated.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepCreated.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent.Builder" title="flow.events.BaseFlowEvent.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent.Builder</span></code></a></p>
+<p>Builder class for StepCreated Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepCreated.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepCreated.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepCreated.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns StepCreated object built by the builder
+:return: StepCreated object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepCreated.get_created_by">
+<span class="sig-name descname"><span class="pre">get_created_by</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepCreated.get_created_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepCreated.get_created_by" title="Permalink to this definition"></a></dt>
+<dd><p>Returns created by of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepCreated.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepCreated.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepCreated.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepCreated.get_widget_id">
+<span class="sig-name descname"><span class="pre">get_widget_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepCreated.get_widget_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepCreated.get_widget_id" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget id of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepCreated.get_widget_name">
+<span class="sig-name descname"><span class="pre">get_widget_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepCreated.get_widget_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepCreated.get_widget_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget name of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepCreated.get_widget_type">
+<span class="sig-name descname"><span class="pre">get_widget_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepCreated.get_widget_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepCreated.get_widget_type" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget type of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepInfoUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">StepInfoUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepInfoUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepInfoUpdated" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowUpdated" title="flow.events.BaseFlowUpdated"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowUpdated</span></code></a></p>
+<p>StepInfoUpdated Event Class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepInfoUpdated.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepInfoUpdated.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepInfoUpdated.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowUpdated.Builder" title="flow.events.BaseFlowUpdated.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowUpdated.Builder</span></code></a></p>
+<p>Builder class for StepInfoUpdated Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepInfoUpdated.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepInfoUpdated.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepInfoUpdated.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns StepInfoUpdated object built by the builder
+:return: StepInfoUpdated object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepInfoUpdated.get_change_info">
+<span class="sig-name descname"><span class="pre">get_change_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepInfoUpdated.get_change_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepInfoUpdated.get_change_info" title="Permalink to this definition"></a></dt>
+<dd><p>Returns updated info of flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepInfoUpdated.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepInfoUpdated.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepInfoUpdated.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepInfoUpdated.get_updated_by">
+<span class="sig-name descname"><span class="pre">get_updated_by</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepInfoUpdated.get_updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepInfoUpdated.get_updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Returns updated by of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepInfoUpdated.get_widget_id">
+<span class="sig-name descname"><span class="pre">get_widget_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepInfoUpdated.get_widget_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepInfoUpdated.get_widget_id" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget id of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepInfoUpdated.get_widget_type">
+<span class="sig-name descname"><span class="pre">get_widget_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepInfoUpdated.get_widget_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepInfoUpdated.get_widget_type" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget type of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepPositionUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">StepPositionUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepPositionUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepPositionUpdated" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowFieldUpdate" title="flow.events.BaseFlowFieldUpdate"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowFieldUpdate</span></code></a></p>
+<p>StepPositionUpdated Event Class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepPositionUpdated.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepPositionUpdated.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepPositionUpdated.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowFieldUpdate.Builder" title="flow.events.BaseFlowFieldUpdate.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowFieldUpdate.Builder</span></code></a></p>
+<p>Builder class for StepPositionUpdated Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepPositionUpdated.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepPositionUpdated.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepPositionUpdated.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns StepPositionUpdated object built by the builder
+:return: StepPositionUpdated object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepPositionUpdated.get_change">
+<span class="sig-name descname"><span class="pre">get_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepPositionUpdated.get_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepPositionUpdated.get_change" title="Permalink to this definition"></a></dt>
+<dd><p>Returns new value and old value of
+the flow step position</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepPositionUpdated.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepPositionUpdated.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepPositionUpdated.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepPositionUpdated.get_new_position">
+<span class="sig-name descname"><span class="pre">get_new_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepPositionUpdated.get_new_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepPositionUpdated.get_new_position" title="Permalink to this definition"></a></dt>
+<dd><p>Returns new value of the step position</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepPositionUpdated.get_old_position">
+<span class="sig-name descname"><span class="pre">get_old_position</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepPositionUpdated.get_old_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepPositionUpdated.get_old_position" title="Permalink to this definition"></a></dt>
+<dd><p>Returns old value of the step position</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepPositionUpdated.get_updated_by">
+<span class="sig-name descname"><span class="pre">get_updated_by</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepPositionUpdated.get_updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepPositionUpdated.get_updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Returns updated by of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepPositionUpdated.get_widget_id">
+<span class="sig-name descname"><span class="pre">get_widget_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepPositionUpdated.get_widget_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepPositionUpdated.get_widget_id" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget id of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepPositionUpdated.get_widget_type">
+<span class="sig-name descname"><span class="pre">get_widget_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepPositionUpdated.get_widget_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepPositionUpdated.get_widget_type" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget type of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepRemoved">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">StepRemoved</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepRemoved"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepRemoved" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent" title="flow.events.BaseFlowEvent"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent</span></code></a></p>
+<p>StepRemoved Event class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepRemoved.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepRemoved.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepRemoved.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowEvent.Builder" title="flow.events.BaseFlowEvent.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowEvent.Builder</span></code></a></p>
+<p>Builder class for StepRemoved Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepRemoved.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepRemoved.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepRemoved.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns StepRemoved object built by the builder
+:return: StepRemoved object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepRemoved.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepRemoved.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepRemoved.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepRemoved.get_widget_id">
+<span class="sig-name descname"><span class="pre">get_widget_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepRemoved.get_widget_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepRemoved.get_widget_id" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget id of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepRemoved.get_widget_type">
+<span class="sig-name descname"><span class="pre">get_widget_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepRemoved.get_widget_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepRemoved.get_widget_type" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget type of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepSizeUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">StepSizeUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepSizeUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepSizeUpdated" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowFieldUpdate" title="flow.events.BaseFlowFieldUpdate"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowFieldUpdate</span></code></a></p>
+<p>StepSizeUpdated Event Class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.StepSizeUpdated.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepSizeUpdated.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepSizeUpdated.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowFieldUpdate.Builder" title="flow.events.BaseFlowFieldUpdate.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowFieldUpdate.Builder</span></code></a></p>
+<p>Builder class for StepSizeUpdated Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepSizeUpdated.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepSizeUpdated.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepSizeUpdated.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns StepSizeUpdated object built by the builder
+:return: StepSizeUpdated object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepSizeUpdated.get_change">
+<span class="sig-name descname"><span class="pre">get_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepSizeUpdated.get_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepSizeUpdated.get_change" title="Permalink to this definition"></a></dt>
+<dd><p>Returns new value and old value
+of the flow step size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepSizeUpdated.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepSizeUpdated.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepSizeUpdated.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepSizeUpdated.get_new_size">
+<span class="sig-name descname"><span class="pre">get_new_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepSizeUpdated.get_new_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepSizeUpdated.get_new_size" title="Permalink to this definition"></a></dt>
+<dd><p>Returns new value of the step size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepSizeUpdated.get_old_size">
+<span class="sig-name descname"><span class="pre">get_old_size</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepSizeUpdated.get_old_size"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepSizeUpdated.get_old_size" title="Permalink to this definition"></a></dt>
+<dd><p>Returns old value of the step size</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepSizeUpdated.get_updated_by">
+<span class="sig-name descname"><span class="pre">get_updated_by</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepSizeUpdated.get_updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepSizeUpdated.get_updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Returns updated by of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepSizeUpdated.get_widget_id">
+<span class="sig-name descname"><span class="pre">get_widget_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepSizeUpdated.get_widget_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepSizeUpdated.get_widget_id" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget id of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.StepSizeUpdated.get_widget_type">
+<span class="sig-name descname"><span class="pre">get_widget_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#StepSizeUpdated.get_widget_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.StepSizeUpdated.get_widget_type" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget type of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.WidgetNameUpdated">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">flow.events.</span></span><span class="sig-name descname"><span class="pre">WidgetNameUpdated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">builder</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#WidgetNameUpdated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.WidgetNameUpdated" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowFieldUpdate" title="flow.events.BaseFlowFieldUpdate"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowFieldUpdate</span></code></a></p>
+<p>WidgetNameUpdated Event Class</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="flow.events.WidgetNameUpdated.Builder">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Builder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">aggregate_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entity_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#WidgetNameUpdated.Builder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.WidgetNameUpdated.Builder" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#flow.events.BaseFlowFieldUpdate.Builder" title="flow.events.BaseFlowFieldUpdate.Builder"><code class="xref py py-class docutils literal notranslate"><span class="pre">flow.events.BaseFlowFieldUpdate.Builder</span></code></a></p>
+<p>Builder class for WidgetNameUpdated Event</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.WidgetNameUpdated.Builder.build">
+<span class="sig-name descname"><span class="pre">build</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#WidgetNameUpdated.Builder.build"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.WidgetNameUpdated.Builder.build" title="Permalink to this definition"></a></dt>
+<dd><p>Returns WidgetNameUpdated object built by the builder
+:return: WidgetNameUpdated object</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.WidgetNameUpdated.get_change">
+<span class="sig-name descname"><span class="pre">get_change</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#WidgetNameUpdated.get_change"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.WidgetNameUpdated.get_change" title="Permalink to this definition"></a></dt>
+<dd><p>Returns new value and old value
+of the step widget name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.WidgetNameUpdated.get_metrics">
+<span class="sig-name descname"><span class="pre">get_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#WidgetNameUpdated.get_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.WidgetNameUpdated.get_metrics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns metric lists for the event</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List[Metric]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.WidgetNameUpdated.get_new_name">
+<span class="sig-name descname"><span class="pre">get_new_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#WidgetNameUpdated.get_new_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.WidgetNameUpdated.get_new_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns new value of the step widget name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.WidgetNameUpdated.get_old_name">
+<span class="sig-name descname"><span class="pre">get_old_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#WidgetNameUpdated.get_old_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.WidgetNameUpdated.get_old_name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns old value of the step widget name</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>dict object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.WidgetNameUpdated.get_updated_by">
+<span class="sig-name descname"><span class="pre">get_updated_by</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#WidgetNameUpdated.get_updated_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.WidgetNameUpdated.get_updated_by" title="Permalink to this definition"></a></dt>
+<dd><p>Returns updated by of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.WidgetNameUpdated.get_widget_id">
+<span class="sig-name descname"><span class="pre">get_widget_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#WidgetNameUpdated.get_widget_id"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.WidgetNameUpdated.get_widget_id" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget id of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="flow.events.WidgetNameUpdated.get_widget_type">
+<span class="sig-name descname"><span class="pre">get_widget_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/flow/events.html#WidgetNameUpdated.get_widget_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#flow.events.WidgetNameUpdated.get_widget_type" title="Permalink to this definition"></a></dt>
+<dd><p>Returns widget type of the flow step</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>str object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="flow.containers.html" class="btn btn-neutral float-left" title="containers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="flow.exceptions.html" class="btn btn-neutral float-right" title="exceptions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, UDPlatforms Inc.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

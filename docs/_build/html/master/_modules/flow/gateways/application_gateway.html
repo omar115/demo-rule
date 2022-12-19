@@ -1,0 +1,244 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>flow.gateways.application_gateway &mdash; flow  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> flow
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption" role="heading"><span class="caption-text">Table of contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../flow.html">flow</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">flow</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>flow.gateways.application_gateway</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for flow.gateways.application_gateway</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">g</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">rakizo.logging_config.logging_config</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+
+<span class="kn">from</span> <span class="nn">flow.gateways.commons</span> <span class="kn">import</span> <span class="n">get_headers</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">setup_logger</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="ApplicationGateway"><a class="viewcode-back" href="../../../flow.gateways.application_gateway.html#flow.gateways.application_gateway.ApplicationGateway">[docs]</a><span class="k">class</span> <span class="nc">ApplicationGateway</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Application gateway class used to hit</span>
+<span class="sd">    Application service endpoint.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">service_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Constructor for application gateway object.</span>
+
+<span class="sd">        :param service_url: string of application service url</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_service_url</span> <span class="o">=</span> <span class="n">service_url</span>
+
+<div class="viewcode-block" id="ApplicationGateway.get_accessible_apps"><a class="viewcode-back" href="../../../flow.gateways.application_gateway.html#flow.gateways.application_gateway.ApplicationGateway.get_accessible_apps">[docs]</a>    <span class="k">def</span> <span class="nf">get_accessible_apps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">app_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Takes token and app_ids then</span>
+<span class="sd">        returns list of application ids</span>
+
+<span class="sd">        :param token: bytes object</span>
+<span class="sd">        :param app_ids: list[str] object</span>
+<span class="sd">        :return: list object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Requesting to URL [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_service_url</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_service_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">get_headers</span><span class="p">(</span><span class="n">token</span><span class="p">),</span>
+                                <span class="n">params</span><span class="o">=</span><span class="s2">&quot;appIds=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;&amp;appIds=&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">app_ids</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to get applications associated with user [</span><span class="si">%s</span><span class="s2">] due to [</span><span class="si">%s</span><span class="s2">]&quot;</span><span class="p">,</span>
+                      <span class="n">g</span><span class="o">.</span><span class="n">USER_CONTEXT</span><span class="o">.</span><span class="n">get_user_id</span><span class="p">(),</span> <span class="n">response</span><span class="p">)</span>
+            <span class="n">apps</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">apps</span> <span class="o">=</span> <span class="p">[</span><span class="n">app</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()]</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">return</span> <span class="n">apps</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2022, UDPlatforms Inc.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

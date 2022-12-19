@@ -1,0 +1,7 @@
+aggregates
+==========
+
+.. automodule:: flow.aggregates
+   :members:
+   :undoc-members:
+   :show-inheritance:
