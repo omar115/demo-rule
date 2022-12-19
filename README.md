@@ -2,8 +2,8 @@
 sphinx test
 
 
-# steps:
+# commands:
 
-1. try to modify existing configuration 
-
-2. try to integrate the package
+```
+sphinx-build -b html -d docs
+```
