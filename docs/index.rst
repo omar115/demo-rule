@@ -9,4 +9,3 @@ platform. The microservices are treated as cloud function. Rakizo is using GCP p
 
 
 .. include:: contents.rst.inc
-.. uml:: context.uml

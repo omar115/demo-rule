@@ -8,3 +8,4 @@ Rule service in Rakizo platform.
    :maxdepth: 2
 
    installation
+   test
