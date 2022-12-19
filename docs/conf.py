@@ -13,7 +13,6 @@
 from datetime import date
 import os
 import sys
-import sphinx_rtd_theme
 
 # -- Project information -----------------------------------------------------
 
@@ -33,7 +32,10 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx_rtd_theme',
     "sphinx_multiversion",
+    'sphinxcontrib.plantuml',
 ]
+
+plantuml = 'java -jar ../../rakizo-builder/docs/plantuml/plantuml-1.2022.4.jar'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
