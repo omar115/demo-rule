@@ -1,4 +1,4 @@
-Flow Creation
+Rule Creation
 =============
 
 .. uml:: create_rule.puml

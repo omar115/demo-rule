@@ -4,19 +4,17 @@ Rule Community Services
 =======================
 
 
-**Rule Community** is a Community including multiple microservices to serve Rakizo 
-platform. The microservices are treated as cloud function. Rakizo is using GCP platform.
-
+Rule service is responsible for creating, updating and deleting rules of the Rakizo platform. When user
+with roles Platform Admin, Account Admin, App Builder Admin, App Builder tries to create rule using name, 
+then `RuleCreated` event is generated and Rule aggregate data is saved to Firestore in `RuleModel` along 
+with the generated events.
 
 .. toctree::
    :maxdepth: 2
 
-   installation
-   test
-   flow_creation
+   rule_creation
+   rule_update
 
 
 .. include:: ../rule/README.md
-
-.. uml:: update_rule.puml
 
