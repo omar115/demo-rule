@@ -11,6 +11,8 @@ platform. The microservices are treated as cloud function. Rakizo is using GCP p
 .. toctree::
    :maxdepth: 2
 
+   .. include:: README.md
+
    installation
    test
 
@@ -19,5 +21,3 @@ platform. The microservices are treated as cloud function. Rakizo is using GCP p
    create_rule.puml
    update_rule.puml
 
-.. template:: mytemplate.html
-   

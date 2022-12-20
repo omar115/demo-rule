@@ -33,6 +33,7 @@ extensions = [
     'sphinx_rtd_theme',
     "sphinx_multiversion",
     'sphinxcontrib.plantuml',
+    'recommonmark',
 ]
 
 plantuml = 'java -jar /Users/omar/Desktop/omar_workspace/demo-rule/docs/plantuml-1.2022.14.jar'
