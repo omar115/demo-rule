@@ -16,5 +16,5 @@ with the generated events.
    rule_update
 
 
-.. include:: ../rule/README.md
+.. include:: README.md
 
