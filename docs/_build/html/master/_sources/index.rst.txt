@@ -8,7 +8,11 @@ Rule Community Services
 platform. The microservices are treated as cloud function. Rakizo is using GCP platform.
 
 
-.. include:: contents.rst.inc
+.. toctree::
+   :maxdepth: 2
+
+   installation
+   test
 
 .. uml::
 
