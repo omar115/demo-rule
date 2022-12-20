@@ -39,6 +39,7 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="test.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flow_creation.html">Flow Creation</a></li>
 </ul>
 
         </div>
@@ -73,110 +74,9 @@ platform. The microservices are treated as cloud function. Rakizo is using GCP p
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="test.html">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flow_creation.html">Flow Creation</a></li>
 </ul>
 </div>
-<p class="plantuml">
-<img src="_images/plantuml-f876a8b44f4a7dff77752b9a3a8f9ff76df2b73d.png" alt="&#64;startuml
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
-' uncomment the following line and comment the first to use locally
-' !include C4_Container.puml
-
-title Rule Component Diagram
-
-AddContainerTag(&quot;class&quot;, $legendText=&quot;class&quot;)
-AddContainerTag(&quot;database&quot;, $legendText=&quot;database&quot;, $bgColor=&quot;#cadetblue&quot;)
-
-Container(aggregates, &quot;aggregates&quot;, $descr=&quot;An Aggregate is an encapsulation of entities and value objects (domain objects). An Aggregate generates an Event and adds it to its event list.&quot;, $tags=&quot;class&quot;)
-Container(api, &quot;api&quot;, $descr=&quot;API is used to create endpoints for users to access the features of a service. API calls the service to perform operations.&quot;, $tags=&quot;class&quot;, $link=&quot;sequence.puml&quot;)
-Container(event_handlers, &quot;event_handlers&quot;, $tags=&quot;class&quot;)
-Container(events, &quot;events&quot;, $tags=&quot;class&quot;)
-Container(repositories, &quot;repositories&quot;, $descr=&quot;A repository is similar to saving business data or object into a database. A Repository saves an Aggregate using a Model.&quot;, $tags=&quot;class&quot;)
-Container(services, &quot;services&quot;, $descr=&quot;A service creates an Aggregate and saves it using a Repository.&quot;, $tags=&quot;class&quot;)
-Container(publisher, &quot;publisher&quot;, $tags=&quot;class&quot;)
-ContainerDb(db, &quot;Database&quot;, &quot;Firestore&quot;, $descr=&quot;Saves the Aggregates.&quot;, $tags=&quot;database&quot;)
-ContainerDb(db1, &quot;Database&quot;, &quot;Firestore&quot;, $descr=&quot;Saves emitted Events.&quot;, $tags=&quot;database&quot;)
-
-Rel(api, services, &quot;Calls&quot;)
-Rel(event_handlers, services, &quot;Calls&quot;)
-Rel(services, aggregates, &quot;Creates&quot;)
-Rel(services, repositories, &quot;Calls&quot;)
-Rel(aggregates, events, &quot;Generates&quot;)
-Rel(repositories, db, &quot;Persists&quot;)
-Rel_R(repositories, db1, &quot;Persists&quot;)
-BiRel_R(aggregates, repositories, &quot;Uses&quot;)
-Rel_D(db1, publisher, &quot;Triggers&quot;)
-
-SHOW_LEGEND()
-&#64;enduml
-"/>
-</p>
-<p class="plantuml">
-<img src="_images/plantuml-e09f811c35690e084809d00f8ad62d6f052aed19.png" alt="&#64;startuml
-title Create rule
-
-#BDB5D5:Client sends a POST request to /rules/;
--&gt; calls;
-#ADD1B2:RuleService;
-floating note : Response: {integration}, 201
-:create;
-#ADD1B2:RuleRepository;
-:save;
-floating note:RuleCreated
-split
-    #ADD1B2:Rule;
-split again
-    #ADD1B2:Events/Event;
-end split
-#F2D2BD:Firestore;
--&gt; triggers;
-#A7C7E7:Publisher;
-legend right
-    Legend
-    | method |
-    |&lt;#ADD1B2&gt; class |
-    |&lt;#F2D2BD&gt; database |
-    |&lt;#BDB5D5&gt; process |
-    |&lt;#A7C7E7&gt; publisher |
-endlegend
-&#64;enduml
-"/>
-</p>
-<p class="plantuml">
-<img src="_images/plantuml-65005e475d8283a960ea4fc087f275fadd9b0957.png" alt="&#64;startuml
-title Update a Rule
-
-#BDB5D5:Client sends a PATCH request to:\n /rules/&lt;rule_id&gt;;
--&gt; calls;
-#ADD1B2:RuleService;
-if (update) then ({response: rule_object}, 200\n yes)
-   #ADD1B2:RuleRepository;
-    :save;
-    floating note:One of these events will be emitted\nbased on the update:\n\nRuleNameUpdated\nRuleInfoUpdated
-    split
-        #ADD1B2:Rule;
-    split again
-        #ADD1B2:Events/Event;
-    end split
-    #F2D2BD:Firestore;
-    -&gt; triggers;
-    #A7C7E7:Publisher;
-    kill
-else ({'message': 'Rule object not found'}, 404\n no)
-    #EB937F:If there is an error, then raise the exception:\nAggregateNotFoundException;
-    kill
-endif
-
-legend right
-    Legend
-    | method |
-    |&lt;#ADD1B2&gt; class |
-    |&lt;#F2D2BD&gt; database |
-    |&lt;#BDB5D5&gt; process |
-    |&lt;#A7C7E7&gt; publisher |
-endlegend
-&#64;enduml
-"/>
-</p>
 <p># Rule Service #</p>
 <p>Rule service is responsible for creating, updating and deleting rules of the Rakizo platform. When user
 with roles Platform Admin, Account Admin, App Builder Admin, App Builder tries to create rule using name,
@@ -215,6 +115,42 @@ with the generated events.</p>
  <span class="p">|</span>---- requirements.txt
 </pre></div>
 </div>
+<p class="plantuml">
+<img src="_images/plantuml-65005e475d8283a960ea4fc087f275fadd9b0957.png" alt="&#64;startuml
+title Update a Rule
+
+#BDB5D5:Client sends a PATCH request to:\n /rules/&lt;rule_id&gt;;
+-&gt; calls;
+#ADD1B2:RuleService;
+if (update) then ({response: rule_object}, 200\n yes)
+   #ADD1B2:RuleRepository;
+    :save;
+    floating note:One of these events will be emitted\nbased on the update:\n\nRuleNameUpdated\nRuleInfoUpdated
+    split
+        #ADD1B2:Rule;
+    split again
+        #ADD1B2:Events/Event;
+    end split
+    #F2D2BD:Firestore;
+    -&gt; triggers;
+    #A7C7E7:Publisher;
+    kill
+else ({'message': 'Rule object not found'}, 404\n no)
+    #EB937F:If there is an error, then raise the exception:\nAggregateNotFoundException;
+    kill
+endif
+
+legend right
+    Legend
+    | method |
+    |&lt;#ADD1B2&gt; class |
+    |&lt;#F2D2BD&gt; database |
+    |&lt;#BDB5D5&gt; process |
+    |&lt;#A7C7E7&gt; publisher |
+endlegend
+&#64;enduml
+"/>
+</p>
 </section>
 
 

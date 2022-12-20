@@ -1,5 +1,5 @@
 Flow Creation
 =============
 
-.. uml:: create_flow.puml
+.. uml:: create_rule.puml
 
