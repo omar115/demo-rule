@@ -14,9 +14,10 @@ platform. The microservices are treated as cloud function. Rakizo is using GCP p
    installation
    test
 
-.. uml::
+.. uml:: 
+   
+   create_rule.puml
+   update_rule.puml
 
-   Alice -> Bob: Hi!
-   Alice <- Bob: How are you?
-
-.. uml:: create_rule.puml
+.. template:: mytemplate.html
+   
