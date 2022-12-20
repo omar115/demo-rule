@@ -1,7 +1,0 @@
-services
-========
-
-.. automodule:: flow.services
-   :members:
-   :undoc-members:
-   :show-inheritance:
