@@ -11,8 +11,6 @@ platform. The microservices are treated as cloud function. Rakizo is using GCP p
 .. toctree::
    :maxdepth: 2
 
-   .. include:: README.md
-
    installation
    test
 
