@@ -16,7 +16,7 @@ platform. The microservices are treated as cloud function. Rakizo is using GCP p
    flow_creation
 
 
-.. include:: README.md
+.. include:: ../rule/readme.md
 
 .. uml:: update_rule.puml
 
