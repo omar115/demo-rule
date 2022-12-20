@@ -14,3 +14,5 @@ platform. The microservices are treated as cloud function. Rakizo is using GCP p
 
    Alice -> Bob: Hi!
    Alice <- Bob: How are you?
+
+.. uml:: create_rule.puml

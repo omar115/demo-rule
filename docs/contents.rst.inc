@@ -9,4 +9,3 @@ Rule service in Rakizo platform.
 
    installation
    test
-   create_rule

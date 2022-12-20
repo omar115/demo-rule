@@ -10,4 +10,7 @@ platform. The microservices are treated as cloud function. Rakizo is using GCP p
 
 .. include:: contents.rst.inc
 
-.. plantuml:: docs/plantuml/create_rule.puml
+.. uml::
+
+   Alice -> Bob: Hi!
+   Alice <- Bob: How are you?
