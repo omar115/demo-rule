@@ -83,6 +83,37 @@ Rule service in Rakizo platform.</p>
 <img src="_images/plantuml-fc4101f7f9dbce27bfcc9f0fcf7a3e021073b090.png" alt="Alice -&gt; Bob: Hi!
 Alice &lt;- Bob: How are you?"/>
 </p>
+<p class="plantuml">
+<img src="_images/plantuml-e09f811c35690e084809d00f8ad62d6f052aed19.png" alt="&#64;startuml
+title Create rule
+
+#BDB5D5:Client sends a POST request to /rules/;
+-&gt; calls;
+#ADD1B2:RuleService;
+floating note : Response: {integration}, 201
+:create;
+#ADD1B2:RuleRepository;
+:save;
+floating note:RuleCreated
+split
+    #ADD1B2:Rule;
+split again
+    #ADD1B2:Events/Event;
+end split
+#F2D2BD:Firestore;
+-&gt; triggers;
+#A7C7E7:Publisher;
+legend right
+    Legend
+    | method |
+    |&lt;#ADD1B2&gt; class |
+    |&lt;#F2D2BD&gt; database |
+    |&lt;#BDB5D5&gt; process |
+    |&lt;#A7C7E7&gt; publisher |
+endlegend
+&#64;enduml
+"/>
+</p>
 </section>
 </section>
 
