@@ -10,10 +10,7 @@ Welcome to flow's documentation!
 
 **PlantUML**
 **PlantUML version2**
-
-.. uml:: context.puml
-
-.. uml:: container.puml
+***PLANTUML****
 
 .. toctree::
    :maxdepth: 4
