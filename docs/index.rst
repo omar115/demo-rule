@@ -9,6 +9,7 @@ Welcome to flow's documentation!
 .. include:: README.md
 
 **PlantUML**
+**PlantUML version2**
 
 .. uml:: context.puml
 
