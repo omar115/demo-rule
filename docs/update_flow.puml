@@ -1,0 +1,33 @@
+@startuml
+title Update a Flow
+
+#BDB5D5:Client sends a PATCH request to:\n /flows/<flow_id>;
+-> calls;
+#ADD1B2:FlowService;
+if (update) then ({response: flow_object}, 200\n yes)
+   #ADD1B2:FlowRepository;
+    :save;
+    floating note:One of these events will be emitted\nbased on the update:\n\n*FlowNameUpdated\n*FlowDescriptionUpdated\n*FlowInfoUpdated
+    split
+        #ADD1B2:Flow;
+    split again
+        #ADD1B2:Events/Event;
+    end split
+    #F2D2BD:Firestore;
+    -> triggers;
+    #A7C7E7:Publisher;
+    kill
+else ({'message': 'Flow object not found'}, 404\n no)
+    #EB937F:If there is an error, then raise the exception:\n*AggregateNotFoundException;
+    kill
+endif
+
+legend right
+    Legend
+    | method |
+    |<#ADD1B2> class |
+    |<#F2D2BD> database |
+    |<#BDB5D5> process |
+    |<#A7C7E7> publisher |
+endlegend
+@enduml

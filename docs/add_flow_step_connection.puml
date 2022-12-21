@@ -1,0 +1,42 @@
+@startuml
+title Add flow step connection
+
+#BDB5D5:Client sends a POST request to /flows/{flow_id}/steps/{step_id}/connections;
+-> calls;
+#ADD1B2:FlowService;
+if (add_step_connection) then (if get flow);
+    #ADD1B2:Flow;
+else (if not get flow)
+#EB937F:Raise the exception:\n\nAggregateNotFoundException;
+kill
+endif
+
+if (add_step_connection) then (if get step);
+    #ADD1B2:Step;
+else (if not get step)
+#EB937F:Raise the exception:\n\nStepNotFoundException;
+kill
+endif
+
+:add_connection;
+#ADD1B2:FlowRepository;
+:save;
+floating note:Emitted event:\n\nStepConnected
+split
+    #ADD1B2:Flow;
+split again
+    #ADD1B2:Event(s);
+end split
+#F2D2BD:Firestore;
+-> triggers;
+#A7C7E7:Publisher;
+legend right
+    Legend
+    | method |
+    |<#ADD1B2> class |
+    |<#EB937F> error |
+    |<#F2D2BD> database |
+    |<#BDB5D5> process |
+    |<#A7C7E7> publisher |
+endlegend
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+title Delete Flow
+repeat: Client sends a Delete request to /flows/{flow_id};
+    -> calls;
+    #ADD1B2:FlowService;
+    floating note: Responses:\n{'message': 'Flow successfully deleted'}, 201 or\n{'message': 'Flow not found'}, 404
+repeat while (delete) -> Flow info
+#ADD1B2:Flow;
+floating note right
+    Raise the exception:
+    AggregateNotFoundException
+end note
+:delete;
+note left
+    Event:
+    FlowDisabled
+end note
+#ADD1B2:FlowRepository;
+split
+    #ADD1B2:Flow;
+split again
+    #ADD1B2:Event(s);
+end split
+#F2D2BD:Firestore;
+-> triggers;
+#A7C7E7:Publisher;
+
+legend right
+    Legend
+    | method |
+    |<#ADD1B2> class |
+    |<#EB937F> error |
+    |<#F2D2BD> database |
+    |<#BDB5D5> process |
+    |<#A7C7E7> publisher |
+
+endlegend
+@enduml

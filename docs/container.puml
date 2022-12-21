@@ -1,0 +1,13 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Flow Community Container Diagram
+
+AddContainerTag("service", $legendText="service")
+
+Container_Boundary(flow_community, "flow-community") {
+  Container(flow, "flow", $descr="Flow service is responsible for creating, updating and deleting flows of the Rakizo platform.", $tags="service", $link="flow.puml")
+}
+
+SHOW_LEGEND()
+@enduml

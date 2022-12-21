@@ -1,0 +1,32 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+' uncomment the following line and comment the first to use locally
+' !include C4_Container.puml
+
+title Flow Component Diagram
+
+AddContainerTag("class", $legendText="class")
+AddContainerTag("database", $legendText="database", $bgColor="#cadetblue")
+
+Container(aggregates, "aggregates", $descr="An Aggregate is an encapsulation of entities and value objects (domain objects). An Aggregate generates an Event and adds it to its event list.", $tags="class")
+Container(api, "api", $descr="API is used to create endpoints for users to access the features of a service. API calls the service to perform operations.", $tags="class", $link="sequence.puml")
+Container(event_handlers, "event_handlers", $tags="class")
+Container(events, "events", $tags="class")
+Container(repositories, "repositories", $descr="A repository is similar to saving business data or object into a database. A Repository saves an Aggregate using a Model.", $tags="class")
+Container(services, "services", $descr="A service creates an Aggregate and saves it using a Repository.", $tags="class")
+Container(publisher, "publisher", $tags="class")
+ContainerDb(db, "Database", "Firestore", $descr="Saves the Aggregates.", $tags="database")
+ContainerDb(db1, "Database", "Firestore", $descr="Saves emitted Events.", $tags="database")
+
+Rel(api, services, "Calls")
+Rel(event_handlers, services, "Calls")
+Rel(services, aggregates, "Creates")
+Rel(services, repositories, "Calls")
+Rel(aggregates, events, "Generates")
+Rel(repositories, db, "Persists")
+Rel_R(repositories, db1, "Persists")
+BiRel_R(aggregates, repositories, "Uses")
+Rel_D(db1, publisher, "Triggers")
+
+SHOW_LEGEND()
+@enduml
