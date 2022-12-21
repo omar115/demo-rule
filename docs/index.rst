@@ -1,20 +1,20 @@
-:orphan:
+.. flow documentation master file, created by
+   sphinx-quickstart on Wed Dec 21 12:17:57 2022.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
 
-Rule Community Services
-=======================
-
-
-Rule service is responsible for creating, updating and deleting rules of the Rakizo platform. When user
-with roles Platform Admin, Account Admin, App Builder Admin, App Builder tries to create rule using name, 
-then `RuleCreated` event is generated and Rule aggregate data is saved to Firestore in `RuleModel` along 
-with the generated events.
+Welcome to flow's documentation!
+================================
 
 .. toctree::
-   :maxdepth: 2
-
-   rule_creation
-   rule_update
+   :maxdepth: 4
+   :caption: Contents:
 
 
-.. include:: README.md
 
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`

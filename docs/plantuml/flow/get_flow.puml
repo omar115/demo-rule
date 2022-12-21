@@ -1,0 +1,25 @@
+@startuml
+title Fetch flow
+while (Client sends a GET request to /flows/{flow_id})
+    -> calls;
+    #ADD1B2:FlowService;
+    while (get)
+        note right
+            Raise AggregateNotFoundException
+            error if flow not found
+        end note
+        #ADD1B2:FlowRepository;
+        :find_flow_by_id_and_company;
+    endwhile
+-> return Flow info;
+endwhile
+#F2D2BD: Responses:\n {flow info}, 200 or\n {'message': 'Flow not found'}, 404;
+legend right
+    Legend
+    | method |
+    |<#ADD1B2> class |
+    |<#BDB5D5> process |
+    |<#EB937F> error |
+    |<#F2D2BD> response |
+endlegend
+@enduml
