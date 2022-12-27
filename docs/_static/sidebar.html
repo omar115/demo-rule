@@ -1,0 +1,8 @@
+{# versions.html #}
+{% set tags = tags %}
+
+<ul>
+  {% for tag in tags %}
+    <li><a href="{{ tag }}/index.html">{{ tag }}</a></li>
+  {% endfor %}
+</ul>
