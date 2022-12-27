@@ -1,8 +1,16 @@
 import sys
+from jinja2 import Environment, FileSystemLoader
 
 # Get the list of tags from the command line arguments
 tags = sys.argv[1:]
 
-print(tags)
+# Set the template directory and load the HTML template
+env = Environment(loader=FileSystemLoader('templates'))
+template = env.get_template('versions.html')
 
-print("----", tags[-1])
+# Render the HTML template and pass the list as a variable
+output = template.render(my_list=tags)
+
+# Write the rendered HTML to a file
+with open('templates/versions.html', 'w') as f:
+    f.write(output)

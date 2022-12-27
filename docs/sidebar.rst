@@ -1,4 +1,6 @@
-Sidebar
-=======
+Document Versions
+=================
 
-.. include:: versions.html
+.. raw:: html
+    :file: templates/versions.html
+

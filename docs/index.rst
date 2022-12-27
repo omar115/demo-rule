@@ -11,8 +11,6 @@ Welcome to flow's documentation!
    :caption: Contents:
 
    sidebar.rst
-   versions.html
-
 
 
 Indices and tables
@@ -23,7 +21,6 @@ Indices and tables
 * :ref:`search`
 
 .. include:: ../README.md
-
 
 **PlantUML**
 
