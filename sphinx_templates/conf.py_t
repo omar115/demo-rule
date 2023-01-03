@@ -46,19 +46,26 @@ release = {{ release | repr }}
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
-    "sphinx_multiversion",
     'sphinxcontrib.plantuml',
     'recommonmark',
 ]
 
-plantuml = 'java -jar /plantuml/plantuml-1.2022.4.jar'
+plantuml = 'java -jar plantuml-1.2022.4.jar'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+html_sidebars = {
+    '**': [
+        'sidebar.html',
+    ]
+}
+
 
 {% if suffix != '.rst' -%}
 # The suffix(es) of source filenames.
@@ -119,3 +126,7 @@ intersphinx_mapping = {
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 {%- endif %}
+
+# conf.py
+def setup(app):
+    app.add_template_global('tags', tags)

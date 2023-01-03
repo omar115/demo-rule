@@ -29,8 +29,6 @@
 
 .. include:: ../{{ pkgname.split('.')[-1] }}/README.md
 
-.. include:: versions.html
-
 .. uml:: create_flow.puml
 
 

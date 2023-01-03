@@ -51,7 +51,6 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
-    "sphinx_multiversion",
     'sphinxcontrib.plantuml',
     'recommonmark',
 ]
@@ -60,6 +59,12 @@ plantuml = 'java -jar plantuml-1.2022.4.jar'
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
+
+html_sidebars = {
+    '**': [
+        'sidebar.html',
+    ]
+}
 
 {% if suffix != '.rst' -%}
 # The suffix(es) of source filenames.

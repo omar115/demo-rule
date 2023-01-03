@@ -8,8 +8,6 @@ Welcome to {{ project }}'s documentation!
 
 .. include:: ../README.md
 
-.. include:: versions.html
-
 **PlantUML**
 
 .. uml:: create_flow.puml

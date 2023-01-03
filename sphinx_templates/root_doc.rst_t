@@ -6,13 +6,12 @@
 Welcome to {{ project }}'s documentation!
 ==========={{ project_underline }}=================
 
-.. include:: ../../README.md
+.. include:: ../README.md
 
 **PlantUML**
 
-.. uml:: ../../docs/plantuml/context.puml
+.. uml:: create_flow.puml
 
-.. uml:: ../../docs/plantuml/container.puml
 
 .. toctree::
    :maxdepth: {{ mastertocmaxdepth }}

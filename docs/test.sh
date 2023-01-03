@@ -1,9 +1,11 @@
 # Get the list of tags
-tags=$(git tag)
+# tags=$(git tag)
 
-echo "${tags}"
 # Split the list of tags into an array
-tag_array=($tags)
+# tag_array=($tags)
+
+read -a tags <<< `git tag`
+
 
 # Call the Python script and pass the list of tags as arguments
-python main.py "${tag_array[@]}"
+python main.py "${tags[@]}"
